@@ -21,6 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->integer('bill_target')->nullable();
+            $table->integer('Night_Start_Time')->nullable();
+            $table->integer('Nigth_End_Time')->nullable();
+            $table->boolean('Night_Auto_Enabled')->nullable();
         });
     }
 

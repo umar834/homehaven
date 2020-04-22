@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMehmoodsaabsTable extends Migration
+class CreateAutoControlTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateMehmoodsaabsTable extends Migration
      */
     public function up()
     {
-        Schema::create('mehmoodsaabs', function (Blueprint $table) {
+        Schema::create('auto_control', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->bigInteger('device_id')->unsigned();
+            $table->time('time');
+            $table->integer('State');
+            $table->foreign('device_id')->references('id')->on('devices');
         });
     }
 
@@ -26,6 +29,6 @@ class CreateMehmoodsaabsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mehmoodsaabs');
+        Schema::dropIfExists('auto_control');
     }
 }
