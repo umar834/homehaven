@@ -1,45 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Hash;
-use App\Power_log;
 
-class HomeController extends Controller
+class ChangePasswordController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        $id = Auth::user()->id;
-        $power = Power_log::where([['date', '=', date('y-m-d')], ['user_id','=', 2]])->firstOrFail();
-
-        $data = array(
-            'power_data' => $power
-        );
-       
-        if (Auth::user())
-        {
-            return view('home')->with($data);
-        }
-        else {
-            return view('auth.login');
-        }
     }
 
     public function showChangePasswordForm(){
@@ -60,7 +32,7 @@ class HomeController extends Controller
 
         $validatedData = $request->validate([
             'current-password' => 'required',
-            'new-password' => 'required|string|min:8|confirmed',
+            'new-password' => 'required|string|min:6|confirmed',
         ]);
 
         //Change Password
@@ -71,5 +43,4 @@ class HomeController extends Controller
         return redirect()->back()->with("success","Password changed successfully !");
 
     }
-
 }

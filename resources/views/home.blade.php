@@ -14,7 +14,12 @@
         </div>
 
         <div class="userInfo">
-            <img src="{{asset('images/user.png')}}" width="80" alt="user">
+            <img 
+            @if (Auth::user()->image == null){
+            src="{{asset('images/user.png')}}"
+             }
+            @endif 
+            width="80" alt="user">
             <p>Hello,</p>
             <h3>{{ Auth::user()->name }}</h3>
         </div>
@@ -31,7 +36,37 @@
                     <i class="fas fa-sign-out-alt"></i>&nbsp; Sign Out</button>
         </div>
     </div>
-
+    
+    <!--PHP CODE TO CHECK FOR LEAST NOT NULL VALUE-->
+    @php
+        if ($power_data->log_5 != null)
+        {
+            $watt = $power_data->log_5;
+        }
+        elseif ($power_data->log_4 != null)
+        {
+            $watt = $power_data->log_4;
+        }
+        elseif ($power_data->log_3 != null)
+        {
+            $watt = $power_data->log_3;
+        }
+        elseif ($power_data->log_2 != null)
+        {
+            $watt = $power_data->log_2;
+        }
+        elseif ($power_data->log_1 != null)
+        {
+            $watt = $power_data->log_1;
+        }
+        elseif ($power_data->log_0 != null)
+        {
+            $watt = $power_data->log_0;
+        }
+        else {
+            $watt = 0;
+        }
+    @endphp
     <!--***********CONTENT MAIN DIV***********-->
     <div class="content-div col-lg-10 col-sm-9 col-xs-12 col-md-9">
 
@@ -41,20 +76,23 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 energydiv">
                 <h3>Energy currently being consumed</h3>
                 <div class="GaugeMeter" id="PreviewGaugeMeter_4"
-                        data-percent="95"
-                        data-append="%"
+                        data-used="{{$watt}}"
+                        data-total="1000"
+                        data-text="{{$watt}}"
+                        data-text_size="0.12"
+                        data-append="Watts"
                         data-size="250"
                         data-theme="Green-Gold-Red" 
                         data-animate_gauge_colors="1" 
                         data-animate_text_colors="1" 
                         data-back=null 
                         data-width="15" 
-                        data-label="Power Consumed" 
+                        data-label="P-Consumption" 
                         data-style="Arch" 
                         data-label_color="#2c94e0"
                         >
                 </div>
-                <p><span class="powerconsumptionspan"><i class="fa fa-arrow-up"></i> 33% increase</span> compared to last week</p>
+                <p><span class="powerconsumptionspan"><i class="fa fa-arrow-up"></i> 33% increase</span> compared to yesterday</p>
             </div>
             
             <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12 billprediciton">
@@ -369,7 +407,7 @@
             <div class="editdp settingcontent">
                 <img id="uploadeddp" src="{{asset('images/user.png')}}" alt="">
                 <input type="file" class="choosedp" accept="image/*" name="dpimg" id="dpfile">
-                <label class="dpbutton" for="dpfile">Change</label>
+                <label class="dpbutton" for="dpfile">Edit</label>
             </div>
 
             <div class="settingcontent editemail">
@@ -378,15 +416,11 @@
             </div>
 
             <div class="settingcontent editpassword">
-                <label for="currentpass">Current Password: </label>
-                <input type="text" class="form-control" name="currentpass" id="currentpass">
-                <label for="newpass">New Password: </label>
-                <input type="text" class="form-control" name="newpass" id="newpass">
-                <label for="confirmpass">Confirm New Password: </label>
-                <input type="text" class="form-control" name="confirmpass" id="confirmpass">
+                <label>Password: <span style="color:#858585;">&nbsp;***********</span></label>
+                <label onclick="window.location='{{ url("changePassword") }}'" class="dpbutton editpasswordbutton">Edit</label>
             </div>
             <div class="settingcontent">
-                <button class="btn btn-success">Save</button>
+                <button type="submit" class="btn btn-success">Save</button>
             </div>
         </div>
     </div>
