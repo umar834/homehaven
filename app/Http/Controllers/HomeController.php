@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Hash;
 use App\Power_log;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -26,11 +27,39 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id;
-        $power = Power_log::where([['date', '=', date('y-m-d')], ['user_id','=', 2]])->firstOrFail();
+        $rooms = DB::table('rooms')->where('user_id', '=', Auth::user()->id)->get();
 
+        $devices = array();
+        foreach($rooms as $room)
+        {
+            $device = DB::table('devices')->where('room_id', '=', $room->id)->get();
+            array_push($devices, $device);
+        }
+
+        $id = Auth::user()->id;
+       /* $power = Power_log::where([['date', '=', date('y-m-d')], ['user_id','=', 2]])->firstOrFail();
+        $previus_id = $power->id-1;
+        $yest_power = Power_log::where([['date', '=', date('y-m-d', strtotime("-1 days"))], ['user_id','=', 1]])->firstOrFail();
+        */
+        /*
+        $devices = array();
+
+        $rooms = Room::All()->where('user_id', '=', Auth::user()->id);
+        foreach ($rooms as $room)
+        {
+            array_push($devices, Device::All()->where('room_id', '=', $room->id));
+        }
+        */
+
+        $power = Power_log::where([['date', '=', '2020-04-28'], ['user_id','=', 2]])->firstOrFail();
+        $previus_id = $power->id-1;
+        $yest_power = Power_log::where([['date', '2020-04-27'], ['user_id','=', 1]])->firstOrFail();
+        
         $data = array(
-            'power_data' => $power
+            'power_data' => $power,
+            'yest_power' => $yest_power,
+            'devices' => $devices,
+            'rooms' => $rooms
         );
        
         if (Auth::user())

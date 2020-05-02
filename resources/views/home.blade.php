@@ -39,32 +39,67 @@
     
     <!--PHP CODE TO CHECK FOR LEAST NOT NULL VALUE-->
     @php
-        if ($power_data->log_5 != null)
+        if ($power_data->log_5)
         {
             $watt = $power_data->log_5;
+            $total_records = 6;
         }
-        elseif ($power_data->log_4 != null)
+        elseif ($power_data->log_4)
         {
             $watt = $power_data->log_4;
+            $total_records = 5;
         }
-        elseif ($power_data->log_3 != null)
+        elseif ($power_data->log_3)
         {
             $watt = $power_data->log_3;
+            $total_records = 4;
         }
-        elseif ($power_data->log_2 != null)
+        elseif ($power_data->log_2)
         {
             $watt = $power_data->log_2;
+            $total_records = 3;
         }
-        elseif ($power_data->log_1 != null)
+        elseif ($power_data->log_1)
         {
             $watt = $power_data->log_1;
+            $total_records = 2;
         }
-        elseif ($power_data->log_0 != null)
+        elseif ($power_data->log_0)
         {
             $watt = $power_data->log_0;
+            $total_records = 1;
         }
         else {
             $watt = 0;
+        }
+
+        /*Calculating previous day power power*/
+        $yest_sum = $yest_power->log_0 + $yest_power->log_1 + $yest_power->log_2 + $yest_power->log_3
+                    + $yest_power->log_4 + $yest_power->log_5;
+        $yest_sum = $yest_sum/6;
+        $today_sum = $power_data->log_0 + $power_data->log_1 + $power_data->log_2 + $power_data->log_3
+                    + $power_data->log_4 + $power_data->log_5;
+        $today_sum = $today_sum / $total_records;
+
+        $increase = null;
+        $decrease = null;
+        if($today_sum >= $yest_sum)
+        {
+            $increase = $today_sum - $yest_sum;
+            $increase = ($increase / $yest_sum) * 100;
+            if($increase == 0)
+            {
+                $increase = 1;
+            }
+            $increase = number_format((float)$increase, 2, '.', '');
+        }
+        else {
+            $decrease = $yest_sum - $today_sum;
+            $decrease = ($decrease / $today_sum) * 100;
+            if($decrease == 0)
+            {
+                $decrease = 1;
+            }
         }
     @endphp
     <!--***********CONTENT MAIN DIV***********-->
@@ -92,9 +127,13 @@
                         data-label_color="#2c94e0"
                         >
                 </div>
-                <p><span class="powerconsumptionspan"><i class="fa fa-arrow-up"></i> 33% increase</span> compared to yesterday</p>
+                @if($increase != null)
+                <p><span class="powerconsumptionspan"><i class="fa fa-arrow-up"></i> {{$increase}}% increase</span> compared to yesterday</p>
+                @else
+                <p><span class="billpredictionspan"><i class="fa fa-arrow-down"></i> {{$decrease}}% decrease </span> compared to yesterday</p>
+                @endif
             </div>
-            
+
             <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12 billprediciton">
                 <h3>Bill Predicitometer</h3>
                 <div class="currentprediciton">
@@ -190,97 +229,81 @@
         <!--*********************CONTROLS MAIN TAB***********************-->
         <div id="controls" class="tabcontent controlsdiv">
             <div style="margin-left: 10px;" class="row">
+        @php
+            $room_count = 0;
+        @endphp
+        @foreach ($devices as $item)         
+               
             <div class="onecontrol col-md-5 col-sm-6 col-xs-12">
-                <h2>Room-1</h2>
-                
-                <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT-I<span>
-                        <label class="switch controlswitch">
-                            <input type="checkbox" class="switch-input" checked>
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </span></h4>
-                </div>
+                <h2>{{$rooms[$room_count]->name}}</h2>
+                @php
+                    $room_count += 1;
+                @endphp
+                @foreach ($item as $device)
+                    @if ($device->device_type == "light")
+                    <div class="controldiv">
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                            <label class="switch controlswitch">
+                                @if ($device->State == 1)
+                                <input type="checkbox" class="switch-input" checked>
+                                @else
+                                <input type="checkbox" class="switch-input">
+                                @endif
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+                    @elseif($device->device_type == "fan")
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                        Speed: <input type ="range" value="{{$device->State}}" min="0" max="10"/>
+                            <label class="switch controlswitch">
+                                @if ($device->State > 0)
+                                <input type="checkbox" class="switch-input" checked>
+                                @else
+                                <input type="checkbox" class="switch-input">
+                                @endif
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
 
-                <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT-II<span>
-                        <label class="switch controlswitch">
-                            <input type="checkbox" class="switch-input" checked>
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </span></h4>
-                </div>
+                    @elseif($device->device_type == "socket")
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                            <label class="switch controlswitch">
+                                @if ($device->State == 1)
+                                <input type="checkbox" class="switch-input" checked>
+                                @else
+                                <input type="checkbox" class="switch-input">
+                                @endif
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
 
-                <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
-                            Speed: <input type ="range" min="0" max="10"/>
-                        <label class="switch controlswitch">
-                            <input type="checkbox" class="switch-input" checked>
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </span></h4>
-                </div>
-
-                <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
-                        <label class="switch controlswitch">
-                            <input type="checkbox" class="switch-input" checked>
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </span></h4>
-                </div>
+                    @elseif($device->device_type == "camera")
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-video"></i>Camera<span class="controlspeed">
+                            <label class="switch controlswitch">
+                                @if ($device->State == 1)
+                                <input type="checkbox" class="switch-input" checked>
+                                @else
+                                <input type="checkbox" class="switch-input">
+                                @endif
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+                    @endif
+                @endforeach
                 
             </div>
-
-            <div class="onecontrol col-md-5 col-sm-6 col-xs-12">
-                <h2>Room-2</h2>
-                
-                <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT-I<span>
-                        <label class="switch controlswitch">
-                            <input type="checkbox" class="switch-input" checked>
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </span></h4>
-                </div>
-
-                <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT-II<span>
-                        <label class="switch controlswitch">
-                            <input type="checkbox" class="switch-input" checked>
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </span></h4>
-                </div>
-
-                <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
-                            Speed: <input type ="range" min="0" max="10"/>
-                        <label class="switch controlswitch">
-                            <input type="checkbox" class="switch-input" checked>
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </span></h4>
-                </div>
-
-                <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
-                        <label class="switch controlswitch">
-                            <input type="checkbox" class="switch-input" checked>
-                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                            <span class="switch-handle"></span>
-                        </label>
-                    </span></h4>
-                </div>
-                
-            </div>
+            @endforeach 
 
             </div> <!--END OF ROW-->
 

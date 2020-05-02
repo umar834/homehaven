@@ -15,6 +15,7 @@ class CreateDevicesTable extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
+            $table->string('device_type');
             $table->bigInteger('module_id')->unsigned();
             $table->bigInteger('room_id')->unsigned();
             $table->boolean('is_dimable')->default(false);
