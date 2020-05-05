@@ -227,8 +227,8 @@
 
 
         <!--*********************CONTROLS MAIN TAB***********************-->
-        <div id="controls" class="tabcontent controlsdiv">
-            <div style="margin-left: 10px;" class="row">
+        <div id="controls" style="overflow-x: hidden; overflow-y:auto; max-height: 100%;" class="tabcontent controlsdiv">
+        <div style="margin-left: 10px; " class="row">
         @php
             $room_count = 0;
         @endphp
@@ -303,14 +303,13 @@
                 @endforeach
                 
             </div>
-            @endforeach 
-
+            @endforeach
             </div> <!--END OF ROW-->
 
         </div>
 
          <!--*********************CONTROLS MAIN TAB***********************-->
-         <div id="nightmode" class="tabcontent nightmodemain">
+         <div id="nightmode" style="overflow-x: hidden; overflow-y:auto; max-height: 100%;" class="tabcontent nightmodemain">
             <h3>Choose what you would like to turn on/off in night mode <span><button class="btn btn-success">Save Changes</button></span></h3>
             <div style="margin-left: 10px;" class="row">
 
@@ -329,99 +328,83 @@
             </div>
 
             <div style="margin-left: 10px;" class="row">
+                @php
+                $room_count = 0;
+                @endphp
+            @foreach ($devices as $item)         
+                   
                 <div class="onecontrol col-md-5 col-sm-6 col-xs-12">
-                    <h2>Room-1</h2>
-                    
-                    <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT-I<span>
-                            <label class="switch controlswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </span></h4>
-                    </div>
-
-                    <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT-II<span>
-                            <label class="switch controlswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </span></h4>
-                    </div>
-
-                    <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
-                                Speed: <input type ="range" min="0" max="10"/>
-                            <label class="switch controlswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </span></h4>
-                    </div>
-
-                    <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
-                            <label class="switch controlswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </span></h4>
-                    </div>
+                    <h2>{{$rooms[$room_count]->name}}</h2>
+                    @php
+                        $room_count += 1;
+                    @endphp
+                    @foreach ($item as $device)
+                        @if ($device->device_type == "light")
+                        <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                                <label class="switch controlswitch">
+                                    @if ($device->State == 1)
+                                    <input type="checkbox" class="switch-input" checked>
+                                    @else
+                                    <input type="checkbox" class="switch-input">
+                                    @endif
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h4>
+                        </div>
+                        @elseif($device->device_type == "fan")
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                            Speed: <input type ="range" value="{{$device->State}}" min="0" max="10"/>
+                                <label class="switch controlswitch">
+                                    @if ($device->State > 0)
+                                    <input type="checkbox" class="switch-input" checked>
+                                    @else
+                                    <input type="checkbox" class="switch-input">
+                                    @endif
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h4>
+                        </div>
+    
+                        @elseif($device->device_type == "socket")
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                                <label class="switch controlswitch">
+                                    @if ($device->State == 1)
+                                    <input type="checkbox" class="switch-input" checked>
+                                    @else
+                                    <input type="checkbox" class="switch-input">
+                                    @endif
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h4>
+                        </div>
+    
+                        @elseif($device->device_type == "camera")
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-video"></i>Camera<span class="controlspeed">
+                                <label class="switch controlswitch">
+                                    @if ($device->State == 1)
+                                    <input type="checkbox" class="switch-input" checked>
+                                    @else
+                                    <input type="checkbox" class="switch-input">
+                                    @endif
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h4>
+                        </div>
+                        @endif
+                    @endforeach
                     
                 </div>
+                @endforeach 
 
-                <div class="onecontrol col-md-5 col-sm-6 col-xs-12">
-                    <h2>Room-2</h2>
-                    
-                    <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT-I<span>
-                            <label class="switch controlswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </span></h4>
-                    </div>
-
-                    <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT-II<span>
-                            <label class="switch controlswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </span></h4>
-                    </div>
-
-                    <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
-                                Speed: <input type ="range" min="0" max="10"/>
-                            <label class="switch controlswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </span></h4>
-                    </div>
-
-                    <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
-                            <label class="switch controlswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                        </span></h4>
-                    </div>
-                    
-                </div>
-
-                </div> <!--END OF ROW-->
+            </div> <!--END OF ROW-->
          </div>
 
 
