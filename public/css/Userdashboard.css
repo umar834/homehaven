@@ -503,6 +503,7 @@ html, body, .maindiv {
 .controlswitch {
 	float: right;
 	margin-right: 15px;
+	margin-top: 0px;
 }
 
 .controldiv input[type='range'] {
@@ -576,3 +577,4 @@ html, body, .maindiv {
 	position: absolute;
 	right: 16%;
 }
+
