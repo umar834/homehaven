@@ -25,6 +25,7 @@ class CreateDevicesTable extends Migration
             $table->foreign('module_id')->references('id')->on('modules');
             $table->foreign('room_id')->references('id')->on('rooms');
             $table->timestamps();
+            $table->integer('used_count');
         });
     }
 
