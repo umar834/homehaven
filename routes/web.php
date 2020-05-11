@@ -66,3 +66,4 @@ Route::post('/changePassword','HomeController@changePassword')->name('changePass
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index');
 Route::get('/welcome', 'HomeController@welcome');
+Route::post('/savenightmode', 'HomeController@changeNightmode')->name('changeNightmode');

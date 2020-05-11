@@ -5,7 +5,21 @@
 <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> 
 <script src="{{ asset('js/GaugeMeter.js')}}"></script> 
 <script src="{{ asset('js/userdashboard.js')}}"></script> 
+<script src="{{ asset('js/jquery.are-you-sure.js')}}"></script> 
+<script>
+    $( document ).ready(function() {
+        $('form.dirty-check').areYouSure();
+});
+    setTimeout(function() {
+    $('.hidecroosss').fadeOut('slow');
+}, 5000); 
+</script>
 @section('content')
+@if (session('nightmodesaved'))
+<div style="text-align: center" class="hidecroosss">
+    <h3 style="color: #2779ff; padding: 20px">Night mode changes saved to table</h3>
+</div>
+@endif
 <div class="row maindiv">
     <!--***********TABS MAIN DIV***********-->
     <div class="tab-div col-lg-2 col-sm-3 col-md-3">
@@ -98,6 +112,32 @@
             {
                 $decrease = 1;
             }
+            $decrease = number_format((float)$decrease, 2, '.', '');
+        }
+
+        $bill_increase = null;
+        $bill_decrease = null;
+
+        if($bill->predicted_amount > $lastmonthbill->amount)
+        {
+            $bill_increase = $bill->predicted_amount - $lastmonthbill->amount;
+            $bill_increase = ($bill_increase / $lastmonthbill->amount) * 100;
+            if($bill_increase == 0)
+            {
+                $bill_increase = 1;
+            }
+            $bill_increase = number_format((float)$bill_increase, 2, '.', '');
+        }
+
+        else
+        {
+            $bill_decrease = $lastmonthbill->amount - $bill->predicted_amount;
+            $bill_decrease = ($bill_decrease / $bill->predicted_amount) * 100;
+            if($bill_decrease == 0)
+            {
+                $bill_decrease = 1;
+            }
+            $bill_decrease = number_format((float)$bill_decrease, 2, '.', '');
         }
     @endphp
     <!--***********CONTENT MAIN DIV***********-->
@@ -136,15 +176,16 @@
                 <h3>Bill Predicitometer</h3>
                 <div class="currentprediciton">
                     <h4>Current Month Prediciton</h4>
-                    <h1><span class="count"> 1780.70 </span><small style="font-size:22px"> PKR</small> </h1>
-                    <p><span class="billpredictionspan"><i class="fa fa-arrow-down"></i> 12% decrease</span> compared to last month</p>
+                <h1><span class="count"> {{$bill->predicted_amount}} </span><small style="font-size:22px"> PKR</small> </h1>
+                @if($bill_increase != null)
+                <p><span style="color: red" class="powerconsumptionspan"><i class="fa fa-arrow-up"></i> {{$bill_increase}}% increase</span> compared to last month</p>
+                @else
+                <p><span style="color: blue"class="billpredictionspan"><i class="fa fa-arrow-down"></i> {{$bill_decrease}}% decrease </span> compared to last month</p>
+                @endif
                 </div>
                 <hr style="color: rgb(133, 133, 133);">
                 <div class="last6monthsprediciton">
-                    <h4>Last Month Bill: <span class="count"> 1945 </span><small> PKR</small><i class="fas fa-tachometer-alt dashboardicon"></i></i> </h4>
-                </div>
-                <div style="margin-bottom: 10px;" class="last6monthsprediciton">
-                    <h4>Last 6 Months Bill Average: <span class="count"> 1720 </span><small> PKR</small><i class="fas fa-tachometer-alt dashboardicon"></i> </h4>
+                    <h4>Last Month Bill: <span class="count"> {{$lastmonthbill->amount}} </span><small> PKR</small><i class="fas fa-tachometer-alt dashboardicon"></i></i> </h4>
                 </div>
             </div>
         </div>
@@ -308,16 +349,19 @@
 
          <!--*********************NIGHTMODE MAIN TAB***********************-->
          <div id="nightmode" style="overflow-x: hidden; overflow-y:auto; max-height: 100%;" class="tabcontent nightmodemain">
-            <h3>Choose what you would like to turn on/off in night mode <span><button class="btn btn-success">Save Changes</button></span></h3>
+            
+        <form class="dirty-check" action="/savenightmode" method="post">
+            @csrf
+            <h3>Choose what you would like to turn on/off in night mode <span><button type="submit" class="btn btn-success">Save Changes</button></span></h3>
             <div style="margin-left: 10px;" class="row">
 
             <div class="md-form md-outline col-md-3 timepicker">
                 <label for="default-picker">Night mode activates at</label>
-                <input type="time" id="starttime" min="20:00" max="01:00" value="10:00:AM" class="form-control" placeholder="Select time">
+                <input type="time" name="starttime" id="starttime" min="19:00:00" max="23:59:00" value="{{$nightstarttime}}" class="form-control" placeholder="Select time" required>
             </div>
             <div class="md-form md-outline col-md-3 timepicker">
                 <label for="default-picker">Night mode deactivates At</label>
-                <input type="time" id="stoptime" min="20:00" max="01:00" value="10:00:AM" class="form-control" placeholder="Select time">
+            <input type="time" name="stoptime" id="stoptime" min="04:00:00" max="10:00:00" value="{{$nightendtime}}" class="form-control" placeholder="Select time" required>
             </div>
 
             </div>
@@ -339,10 +383,10 @@
                             <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
-                                    @if ($device->State == 1)
-                                    <input type="checkbox" class="switch-input" checked>
+                                    @if ($device->Night_start_state == 1)
+                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input" checked>
                                     @else
-                                    <input type="checkbox" class="switch-input">
+                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input">
                                     @endif
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
@@ -350,10 +394,10 @@
                             </span></h6>
                             <h6>End State: <span>
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
-                                    @if ($device->State == 1)
-                                    <input type="checkbox" class="switch-input" checked>
+                                    @if ($device->Night_end_state == 1)
+                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input" checked>
                                     @else
-                                    <input type="checkbox" class="switch-input">
+                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input">
                                     @endif
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
@@ -364,13 +408,13 @@
                         @elseif($device->device_type == "fan")
                         <div class="controldiv">
                             <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
-                            Speed: <input type ="range" value="{{$device->State}}" min="0" max="10"/></h4>
+                           </h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
-                                    @if ($device->State == 1)
-                                    <input type="checkbox" class="switch-input" checked>
+                                    @if ($device->Night_start_state == 1)
+                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input" checked>
                                     @else
-                                    <input type="checkbox" class="switch-input">
+                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input">
                                     @endif
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
@@ -378,10 +422,10 @@
                             </span></h6>
                             <h6>End State: <span>
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
-                                    @if ($device->State == 1)
-                                    <input type="checkbox" class="switch-input" checked>
+                                    @if ($device->Night_end_state == 1)
+                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input" checked>
                                     @else
-                                    <input type="checkbox" class="switch-input">
+                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input">
                                     @endif
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
@@ -394,10 +438,10 @@
                             <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
-                                    @if ($device->State == 1)
-                                    <input type="checkbox" class="switch-input" checked>
+                                    @if ($device->Night_start_state == 1)
+                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input" checked>
                                     @else
-                                    <input type="checkbox" class="switch-input">
+                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input">
                                     @endif
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
@@ -405,10 +449,10 @@
                             </span></h6>
                             <h6>End State: <span>
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
-                                    @if ($device->State == 1)
-                                    <input type="checkbox" class="switch-input" checked>
+                                    @if ($device->Night_end_state == 1)
+                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input" checked>
                                     @else
-                                    <input type="checkbox" class="switch-input">
+                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input">
                                     @endif
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
@@ -421,10 +465,10 @@
                             <h4><i style="margin-right: 10px;" class="fas fa-video"></i>Camera</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
-                                    @if ($device->State == 1)
-                                    <input type="checkbox" class="switch-input" checked>
+                                    @if ($device->Night_start_state == 1)
+                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input" checked>
                                     @else
-                                    <input type="checkbox" class="switch-input">
+                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input">
                                     @endif
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
@@ -432,10 +476,10 @@
                             </span></h6>
                             <h6>End State: <span>
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
-                                    @if ($device->State == 1)
-                                    <input type="checkbox" class="switch-input" checked>
+                                    @if ($device->Night_end_state == 1)
+                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input" checked>
                                     @else
-                                    <input type="checkbox" class="switch-input">
+                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input">
                                     @endif
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
@@ -449,6 +493,9 @@
                 @endforeach 
 
             </div> <!--END OF ROW-->
+
+        </form>
+
          </div>
 
 
