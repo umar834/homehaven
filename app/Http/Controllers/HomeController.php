@@ -32,13 +32,6 @@ class HomeController extends Controller
         $lastmonthbill = DB::table('bill')->where('user_id', '=', Auth::user()->id)->orderby('date', 'desc')
                             ->skip(1)->first();
 
-        $devices = array();
-        foreach($rooms as $room)
-        {
-            $device = DB::table('devices')->where('room_id', '=', $room->id)->get();
-            array_push($devices, $device);
-        }
-
         $power = Power_log::where([['date', '=', '2020-04-28'], ['user_id','=', 2]])->firstOrFail();
         $previus_id = $power->id-1;
         $yest_power = Power_log::where([['date', '2020-04-27'], ['user_id','=', 1]])->firstOrFail();
@@ -48,7 +41,6 @@ class HomeController extends Controller
         $data = array(
             'power_data' => $power,
             'yest_power' => $yest_power,
-            'devices' => $devices,
             'rooms' => $rooms,
             'bill' => $bill,
             'lastmonthbill' => $lastmonthbill,
@@ -66,15 +58,10 @@ class HomeController extends Controller
     }
 
     /********************SAVE NIGHT MODE DATA TO TABLE *********************/
+
     public function changeNightmode()
     {
         $rooms = DB::table('rooms')->where('user_id', '=', Auth::user()->id)->get();
-        $devices = array();
-        foreach($rooms as $room)
-        {
-            $device = DB::table('devices')->where('room_id', '=', $room->id)->get();
-            array_push($devices, $device);
-        }
 
         $starttime = Request::get('starttime');
         $stoptime = Request::get('stoptime');
@@ -82,34 +69,133 @@ class HomeController extends Controller
         $user_id = Auth::user()->id;
 
         $number = 1;
-        foreach($devices as $room)
+        foreach($rooms as $room)
         {
-            foreach($room as $device)
+            $night_state = 0;
+            $morning_state = 0;
+            if($room->dev1_type != 0)
             {
-                $startstate = Request::get('start'.$number);
-                $stopstate = Request::get('end'.$number);
-                if($startstate == null)
+                $dev1_start = Request::get('start1'.$room->id);
+                $dev1_stop = Request::get('end1'.$room->id);
+                if($dev1_start == null)
                 {
-                    $startstate = 0;
+                    $night_state += 0;
                 }
                 else
                 {
-                    $startstate = 1;
+                    $night_state += 128;
                 }
 
-                if($stopstate == null)
+                if($dev1_stop == null)
                 {
-                    $stopstate = 0;
+                    $morning_state += 0;
                 }
                 else
                 {
-                    $stopstate = 1;
+                    $morning_state += 128;
                 }
-                DB::update('update devices set Night_start_state = ?, Night_end_state = ? where id = ?',[$startstate,$stopstate, $device->id]);
-                DB::update('update users set Night_Start_Time = ?, Night_End_Time = ? where id = ?',[$starttime,$stoptime, $user_id]);
-                $number += 1;
             }
+
+            if($room->dev2_type != 0)
+            {
+                $dev1_start = Request::get('start2'.$room->id);
+                $dev1_stop = Request::get('end2'.$room->id);
+                if($dev1_start == null)
+                {
+                    $night_state += 0;
+                }
+                else
+                {
+                    $night_state += 64;
+                }
+
+                if($dev1_stop == null)
+                {
+                    $morning_state += 0;
+                }
+                else
+                {
+                    $morning_state += 64;
+                }
+            }
+
+            if($room->dev3_type != 0)
+            {
+                $dev1_start = Request::get('start3'.$room->id);
+                $dev1_stop = Request::get('end3'.$room->id);
+                if($dev1_start == null)
+                {
+                    $night_state += 0;
+                }
+                else
+                {
+                    $night_state += 32;
+                }
+
+                if($dev1_stop == null)
+                {
+                    $morning_state += 0;
+                }
+                else
+                {
+                    $morning_state += 32;
+                }
+            }
+
+            if($room->dev4_type != 0)
+            {
+                $dev1_start = Request::get('start4'.$room->id);
+                $dev1_stop = Request::get('end4'.$room->id);
+                if($dev1_start == null)
+                {
+                    $night_state += 0;
+                }
+                else
+                {
+                    $night_state += 16;
+                }
+
+                if($dev1_stop == null)
+                {
+                    $morning_state += 0;
+                }
+                else
+                {
+                    $morning_state += 16;
+                }
+            }
+
+            if($room->dim_type != 0)
+            {
+                $dev1_start = Request::get('start5'.$room->id);
+                $dev1_stop = Request::get('end5'.$room->id);
+                if($dev1_start == null)
+                {
+                    $night_state += 0;
+                }
+                else
+                {
+                    $night_state += 7;
+                }
+
+                if($dev1_stop == null)
+                {
+                    $morning_state += 0;
+                }
+                else
+                {
+                    $morning_state += 7;
+                }
+            }
+
+            DB::update('update rooms set night_state = ?, morning_state = ? where id = ?',[$night_state,$morning_state, $room->id]);
         }
+
+            $startstate = Request::get('start'.$number);
+            $stopstate = Request::get('end'.$number);
+
+            DB::update('update users set Night_Start_Time = ?, Night_End_Time = ? where id = ?',[$starttime,$stoptime, $user_id]);
+
         return redirect()->back()->with("nightmodesaved","Changes saved to the database !");
     }
 

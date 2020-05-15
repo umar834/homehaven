@@ -266,80 +266,265 @@
 
 
         <!--*********************CONTROLS MAIN TAB***********************-->
+
+
         <div id="controls" style="overflow-x: hidden; overflow-y:auto; max-height: 100%;" class="tabcontent controlsdiv">
         <div style="margin-left: 10px; " class="row">
-        @php
-            $room_count = 0;
-        @endphp
-        @foreach ($devices as $item)         
-               
+        @foreach ($rooms as $room)         
+            @php
+                $state = $room->state;
+                $dev1_state = floor($state/128);
+                if($dev1_state == 1) 
+                    $state -=128;
+                $dev2_state = floor($state/64);
+                if($dev2_state == 1) 
+                    $state -=64;
+                $dev3_state = floor($state/32);
+                if($dev3_state == 1) 
+                    $state -=32;
+                $dev4_state = floor($state/16);
+                if($dev4_state == 1) 
+                    $state -=16;
+                $dev5_state = $state;
+            @endphp
             <div class="onecontrol col-md-5 col-sm-6 col-xs-12">
-                <h2>{{$rooms[$room_count]->name}}</h2>
-                @php
-                    $room_count += 1;
-                @endphp
-                @foreach ($item as $device)
-                    @if ($device->device_type == "light")
+                <h2>{{$room->name}}</h2>
+
+                <!--DEVICE ONE-->
+                    @if ($room->dev1_type == 1)
                     <div class="controldiv">
                     <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
                             <label class="switch controlswitch">
-                                @if ($device->State == 1)
-                                <input type="checkbox" class="switch-input" checked>
-                                @else
+                                @if($dev1_state == 0)
                                 <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
                                 @endif
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
                         </span></h4>
                     </div>
-                    @elseif($device->device_type == "fan")
+                    @elseif($room->dev1_type == 2)
                     <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
-                        Speed: <input type ="range" value="{{$device->State}}" min="0" max="10"/>
+                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed"> 
+
                             <label class="switch controlswitch">
-                                @if ($device->State > 0)
-                                <input type="checkbox" class="switch-input" checked>
-                                @else
+
+                                @if($dev1_state == 0)
                                 <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
                                 @endif
+                                
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
                         </span></h4>
                     </div>
 
-                    @elseif($device->device_type == "socket")
+                    @elseif($room->dev1_type == 3)
                     <div class="controldiv">
                         <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
                             <label class="switch controlswitch">
-                                @if ($device->State == 1)
-                                <input type="checkbox" class="switch-input" checked>
-                                @else
+                                
+                                @if($dev1_state == 0)
                                 <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
                                 @endif
+                                
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
                         </span></h4>
                     </div>
 
-                    @elseif($device->device_type == "camera")
+                    @endif
+
+                    <!--DEVICE TWO-->
+                    @if ($room->dev2_type == 1)
                     <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-video"></i>Camera<span class="controlspeed">
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
                             <label class="switch controlswitch">
-                                @if ($device->State == 1)
-                                <input type="checkbox" class="switch-input" checked>
-                                @else
+                                
+                                @if($dev2_state == 0)
                                 <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
                                 @endif
+
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
                         </span></h4>
                     </div>
+                    @elseif($room->dev2_type == 2)
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                        
+                            <label class="switch controlswitch">
+                                
+                                @if($dev2_state == 0)
+                                <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
+                                @endif
+                                
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+
+                    @elseif($room->dev2_type == 3)
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                            <label class="switch controlswitch">
+                                
+                                @if($dev2_state == 0)
+                                <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
+                                @endif
+                                
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+
                     @endif
-                @endforeach
+
+                    <!--DEVICE THREE-->
+                    @if ($room->dev3_type == 1)
+                    <div class="controldiv">
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                            <label class="switch controlswitch">
+                                
+                                @if($dev3_state == 0)
+                                <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
+                                @endif
+
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+                    @elseif($room->dev3_type == 2)
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                        
+                            <label class="switch controlswitch">
+                               
+                                @if($dev3_state == 0)
+                                <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
+                                @endif
+                                
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+
+                    @elseif($room->dev3_type == 3)
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                            <label class="switch controlswitch">
+
+                                @if($dev3_state == 0)
+                                <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
+                                @endif
+                                
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+
+                    @endif
+
+                    <!--DEVICE FOUR-->
+                    @if ($room->dev4_type == 1)
+                    <div class="controldiv">
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                            <label class="switch controlswitch">
+
+                                @if($dev4_state == 0)
+                                <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
+                                @endif
+
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+                    @elseif($room->dev4_type == 2)
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                       
+                            <label class="switch controlswitch">
+
+                                @if($dev4_state == 0)
+                                <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
+                                @endif
+                                
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+
+                    @elseif($room->dev4_type == 3)
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                            <label class="switch controlswitch">
+
+                                @if($dev4_state == 0)
+                                <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
+                                @endif
+                                
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+
+                    @endif
+
+                    <!--DEVICE FIVE-->
+                    @if ($room->dim_type > 0)
+                    
+                    <div class="controldiv">
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Dimable<span class="controlspeed">
+                    Speed: <input type ="range" value="{{$dev5_state}}" min="0" max="7"/>
+                            <label class="switch controlswitch">
+
+                                @if($dev5_state == 0)
+                                <input type="checkbox" class="switch-input">
+                                @else
+                                <input type="checkbox" class="switch-input" checked>
+                                @endif
+                                
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+                    
+                    @endif
                 
             </div>
             @endforeach
@@ -367,130 +552,466 @@
             </div>
 
             <div style="margin-left: 10px;" class="row">
-                @php
-                $room_count = 0;
-                @endphp
-            @foreach ($devices as $item)         
-                   
+
+            @foreach ($rooms as $room)         
+            @php
+            $night_state = $room->night_state;
+            $dev1_state = floor($night_state/128);
+            if($dev1_state == 1) 
+                $night_state -=128;
+            $dev2_state = floor($night_state/64);
+            if($dev2_state == 1) 
+                $night_state -=64;
+            $dev3_state = floor($night_state/32);
+            if($dev3_state == 1) 
+                $night_state -=32;
+            $dev4_state = floor($night_state/16);
+            if($dev4_state == 1) 
+                $night_state -=16;
+            $dev5_state = $night_state;
+
+            $morning_state = $room->morning_state;
+            $dev1_endstate = floor($morning_state/128);
+            if($dev1_endstate == 1) 
+                $morning_state -=128;
+            $dev2_endstate = floor($morning_state/64);
+            if($dev2_endstate == 1) 
+                $morning_state -=64;
+            $dev3_endstate = floor($morning_state/32);
+            if($dev3_endstate == 1) 
+                $morning_state -=32;
+            $dev4_endstate = floor($morning_state/16);
+            if($dev4_endstate == 1) 
+                $morning_state -=16;
+            $dev5_endstate = $morning_state;
+        @endphp
                 <div class="onecontrol col-md-5 col-sm-6 col-xs-12">
-                    <h2>{{$rooms[$room_count]->name}}</h2>
-                    @php
-                        $room_count += 1;
-                    @endphp
-                    @foreach ($item as $device)
-                        @if ($device->device_type == "light")
+                    <h2>{{$room->name}}</h2>
+                    
+                        <!-- DEVICE ONE -->
+                        @if ($room->dev1_type == 1)
                         <div class="controldiv">
                             <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
-                                    @if ($device->Night_start_state == 1)
-                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input" checked>
+                                    
+                                    @if($dev1_state == 0)
+                                    <input type="checkbox" name="start1{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input">
+                                    <input type="checkbox" name="start1{{$room->id}}" class="switch-input" checked>
                                     @endif
+
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label>
                             </span></h6>
                             <h6>End State: <span>
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
-                                    @if ($device->Night_end_state == 1)
-                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input" checked>
+                                    
+                                    @if($dev1_endstate == 0)
+                                    <input type="checkbox" name="end1{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input">
+                                    <input type="checkbox" name="end1{{$room->id}}" class="switch-input" checked>
                                     @endif
+                                    
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label>
                             </span></h6>
                         </div>
                         
-                        @elseif($device->device_type == "fan")
+                        @elseif($room->dev1_type == 2)
                         <div class="controldiv">
                             <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
                            </h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
-                                    @if ($device->Night_start_state == 1)
-                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input" checked>
+                              
+                                    @if($dev1_state == 0)
+                                    <input type="checkbox" name="start1{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input">
+                                    <input type="checkbox" name="start1{{$room->id}}" class="switch-input" checked>
                                     @endif
+                                    
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label>
                             </span></h6>
                             <h6>End State: <span>
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
-                                    @if ($device->Night_end_state == 1)
-                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input" checked>
+                            
+                                    @if($dev1_endstate == 0)
+                                    <input type="checkbox" name="end1{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input">
+                                    <input type="checkbox" name="end1{{$room->id}}" class="switch-input" checked>
                                     @endif
+                                   
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label>
                             </span></h6>
                         </div>
     
-                        @elseif($device->device_type == "socket")
+                        @elseif($room->dev1_type == 3)
                         <div class="controldiv">
                             <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
-                                    @if ($device->Night_start_state == 1)
-                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input" checked>
+                                
+                                    @if($dev1_state == 0)
+                                    <input type="checkbox" name="start1{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input">
+                                    <input type="checkbox" name="start1{{$room->id}}" class="switch-input" checked>
                                     @endif
+                                   
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label>
                             </span></h6>
                             <h6>End State: <span>
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
-                                    @if ($device->Night_end_state == 1)
-                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input" checked>
+                                  
+                                    @if($dev1_endstate == 0)
+                                    <input type="checkbox" name="end1{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input">
+                                    <input type="checkbox" name="end1{{$room->id}}" class="switch-input" checked>
                                     @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+
+                        @endif
+
+                        <!-- DEVICE TWO -->
+                        @if ($room->dev2_type == 1)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+
+                                    @if($dev2_state == 0)
+                                    <input type="checkbox" name="start2{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start2{{$room->id}}" class="switch-input" checked>
+                                    @endif
+
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                                    
+                                    @if($dev2_endstate == 0)
+                                    <input type="checkbox" name="end2{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end2{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+                        
+                        @elseif($room->dev2_type == 2)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                           </h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+                              
+                                    @if($dev2_state == 0)
+                                    <input type="checkbox" name="start2{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start2{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                            
+                                    @if($dev2_endstate == 0)
+                                    <input type="checkbox" name="end2{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end2{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                   
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label>
                             </span></h6>
                         </div>
     
-                        @elseif($device->device_type == "camera")
+                        @elseif($room->dev2_type == 3)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-video"></i>Camera</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
-                                    @if ($device->Night_start_state == 1)
-                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input" checked>
+                                
+                                    @if($dev2_state == 0)
+                                    <input type="checkbox" name="start2{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="start{{$device->id}}" class="switch-input">
+                                    <input type="checkbox" name="start2{{$room->id}}" class="switch-input" checked>
                                     @endif
+                                   
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label>
                             </span></h6>
                             <h6>End State: <span>
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
-                                    @if ($device->Night_end_state == 1)
-                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input" checked>
+                                  
+                                    @if($dev2_endstate == 0)
+                                    <input type="checkbox" name="end2{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="end{{$device->id}}" class="switch-input">
+                                    <input type="checkbox" name="end2{{$room->id}}" class="switch-input" checked>
                                     @endif
+                                    
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
                                     <span class="switch-handle"></span>
                                 </label>
                             </span></h6>
                         </div>
+
                         @endif
-                    @endforeach
+
+                        <!-- DEVICE THREE -->
+                        @if ($room->dev3_type == 1)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+
+                                    @if($dev3_state == 0)
+                                    <input type="checkbox" name="start3{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start3{{$room->id}}" class="switch-input" checked>
+                                    @endif
+
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                                    
+                                    @if($dev3_endstate == 0)
+                                    <input type="checkbox" name="end3{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end3{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+                        
+                        @elseif($room->dev3_type == 2)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                           </h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+                              
+                                    @if($dev3_state == 0)
+                                    <input type="checkbox" name="start3{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start3{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                            
+                                    @if($dev3_endstate == 0)
+                                    <input type="checkbox" name="end3{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end3{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                   
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+    
+                        @elseif($room->dev3_type == 3)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+                                
+                                    @if($dev3_state == 0)
+                                    <input type="checkbox" name="start3{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start3{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                   
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                                  
+                                    @if($dev3_endstate == 0)
+                                    <input type="checkbox" name="end3{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end3{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+
+                        @endif
+
+                        <!-- DEVICE FOUR -->
+                        @if ($room->dev4_type == 1)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+
+                                    @if($dev4_state == 0)
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                                    
+                                    @if($dev4_endstate == 0)
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+                        
+                        @elseif($room->dev4_type == 2)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                           </h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+                              
+                                    @if($dev4_state == 0)
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                            
+                                    @if($dev4_endstate == 0)
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                   
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+    
+                        @elseif($room->dev4_type == 3)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+                                
+                                    @if($dev4_state == 0)
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                   
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                                  
+                                    @if($dev5_endstate == 0)
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+
+                        @endif
+
+                        <!-- DEVICE FIVE -->
+                        @if ($room->dim_type > 0)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Dimable</h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+
+                                    @if($dev5_state == 0)
+                                    <input type="checkbox" name="start5{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start5{{$room->id}}" class="switch-input" checked>
+                                    @endif
+
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                                    
+                                    @if($dev5_endstate == 0)
+                                    <input type="checkbox" name="end5{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end5{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+
+                        @endif
                     
                 </div>
-                @endforeach 
+            @endforeach 
 
             </div> <!--END OF ROW-->
 
