@@ -15,25 +15,33 @@
 }, 5000); 
 </script>
 @section('content')
-@if (session('nightmodesaved'))
+@if (session('success'))
 <div style="text-align: center" class="hidecroosss">
-    <h3 style="color: #2779ff; padding: 20px">Night mode changes saved to table</h3>
+    <h3 style="color: #2779ff; padding: 20px"> {{ session('success') }}</h3>
 </div>
 @endif
 <div class="row maindiv">
     <!--***********TABS MAIN DIV***********-->
     <div class="tab-div col-lg-2 col-sm-3 col-md-3">
         <div class="logoDiv">
-            <h3>HomeHaven</h3>
+            <a href="{{ url('/') }}">
+            <h3 style="color: white">HomeHaven</h3>
+            </a>
         </div>
 
         <div class="userInfo">
             <img 
-            @if (Auth::user()->image == null){
+            @if (Auth::user()->image_name == null){
             src="{{asset('images/user.png')}}"
              }
+            @else{
+                @php
+                    $image = Auth::user()->image_name;
+                @endphp
+                src="<?php echo asset("storage/$image")?>"
+            }
             @endif 
-            width="80" alt="user">
+            width="80" height="80" alt="user">
             <p>Hello,</p>
             <h3>{{ Auth::user()->name }}</h3>
         </div>
@@ -1023,22 +1031,39 @@
         <!--*****************SETTINGS TAB****************-->
         <div id="settings" class="tabcontent settingstab col-md-8 col-lg-6 col-sm-12 col-xs-12">
             <div class="editdp settingcontent">
-                <img id="uploadeddp" src="{{asset('images/user.png')}}" alt="">
+            <form action="/saveuserimage" method="post" enctype="multipart/form-data">
+                @csrf
+                <img id="uploadeddp"
+            @if (Auth::user()->image_name == null){
+            src="{{asset('images/user.png')}}"
+             }
+            @else{
+                @php
+                    $image = Auth::user()->image_name;
+                @endphp
+                src="<?php echo asset("storage/$image")?>"
+            }
+            @endif 
+            alt="user">
+                 
                 <input type="file" class="choosedp" accept="image/*" name="dpimg" id="dpfile">
-                <label class="dpbutton" for="dpfile">Edit</label>
+                <label class="dpbutton" for="dpfile">Change Image</label>
+                <button style="margin-top: 10px; float: right; background-color: #2779ff" type="submit" class="btn btn-success" disabled>Save Image</button>
+            </form>
             </div>
 
             <div class="settingcontent editemail">
                 <label for="emailid">Email: </label>
-                <input type="email" class="form-control" name="email" id="emailid" value="user@gmail.com">
+                <input type="email" class="form-control" name="email" id="emailid" value="{{Auth::user()->email}}" readonly>
+                <label style="margin-top: 10px" onclick="window.location='{{ url("changeEmail") }}'" class="dpbutton">Change Email</label>
             </div>
 
             <div class="settingcontent editpassword">
                 <label>Password: <span style="color:#858585;">&nbsp;***********</span></label>
-                <label onclick="window.location='{{ url("changePassword") }}'" class="dpbutton editpasswordbutton">Edit</label>
+                <label onclick="window.location='{{ url("changePassword") }}'" class="dpbutton editpasswordbutton">Change Password</label>
             </div>
             <div class="settingcontent">
-                <button type="submit" class="btn btn-success">Save</button>
+               
             </div>
         </div>
     </div>
@@ -1071,5 +1096,15 @@ reader.readAsDataURL(input.files[0]); // convert to base64 string
 $("#dpfile").change(function() {
 readURL(this);
 });
+
+/*CHECK IF INPUT IS EMPTY*/
+$('input[type=file]').change(function(){
+    if($('input[type=file]').val()==''){
+        $('button').attr('disabled',true)
+    } 
+    else{
+      $('button').attr('disabled',false);
+    }
+})
 </script>
 @endsection

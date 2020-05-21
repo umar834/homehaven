@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Hash;
 use App\Power_log;
@@ -59,12 +59,12 @@ class HomeController extends Controller
 
     /********************SAVE NIGHT MODE DATA TO TABLE *********************/
 
-    public function changeNightmode()
+    public function changeNightmode(Request $request)
     {
         $rooms = DB::table('rooms')->where('user_id', '=', Auth::user()->id)->get();
 
-        $starttime = Request::get('starttime');
-        $stoptime = Request::get('stoptime');
+        $starttime = $request->get('starttime');
+        $stoptime = $request->get('stoptime');
 
         $user_id = Auth::user()->id;
 
@@ -75,8 +75,8 @@ class HomeController extends Controller
             $morning_state = 0;
             if($room->dev1_type != 0)
             {
-                $dev1_start = Request::get('start1'.$room->id);
-                $dev1_stop = Request::get('end1'.$room->id);
+                $dev1_start = $request->get('start1'.$room->id);
+                $dev1_stop = $request->get('end1'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
@@ -98,8 +98,8 @@ class HomeController extends Controller
 
             if($room->dev2_type != 0)
             {
-                $dev1_start = Request::get('start2'.$room->id);
-                $dev1_stop = Request::get('end2'.$room->id);
+                $dev1_start = $request->get('start2'.$room->id);
+                $dev1_stop = $request->get('end2'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
@@ -121,8 +121,8 @@ class HomeController extends Controller
 
             if($room->dev3_type != 0)
             {
-                $dev1_start = Request::get('start3'.$room->id);
-                $dev1_stop = Request::get('end3'.$room->id);
+                $dev1_start = $request->get('start3'.$room->id);
+                $dev1_stop = $request->get('end3'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
@@ -144,8 +144,8 @@ class HomeController extends Controller
 
             if($room->dev4_type != 0)
             {
-                $dev1_start = Request::get('start4'.$room->id);
-                $dev1_stop = Request::get('end4'.$room->id);
+                $dev1_start = $request->get('start4'.$room->id);
+                $dev1_stop = $request->get('end4'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
@@ -167,8 +167,8 @@ class HomeController extends Controller
 
             if($room->dim_type != 0)
             {
-                $dev1_start = Request::get('start5'.$room->id);
-                $dev1_stop = Request::get('end5'.$room->id);
+                $dev1_start = $request->get('start5'.$room->id);
+                $dev1_stop = $request->get('end5'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
@@ -191,12 +191,12 @@ class HomeController extends Controller
             DB::update('update rooms set night_state = ?, morning_state = ? where id = ?',[$night_state,$morning_state, $room->id]);
         }
 
-            $startstate = Request::get('start'.$number);
-            $stopstate = Request::get('end'.$number);
+            $startstate =$request->get('start'.$number);
+            $stopstate = $request->get('end'.$number);
 
             DB::update('update users set Night_Start_Time = ?, Night_End_Time = ? where id = ?',[$starttime,$stoptime, $user_id]);
 
-        return redirect()->back()->with("nightmodesaved","Changes saved to the database !");
+        return redirect()->back()->with("success","Nighmode changes saved to the database !");
     }
 
     public function showChangePasswordForm(){
@@ -229,4 +229,42 @@ class HomeController extends Controller
 
     }
 
+    public function storeimage(Request $request){
+
+      
+       $imagepath = request('dpimg')->store('images', 'public');
+       $user_id = Auth::user()->id;
+
+       DB::update('update users set image_name = ? where id = ?',[$imagepath, $user_id]);
+       return redirect()->back()->with("success","mubarak ho ap ki shkul save ho gai !");
+    }
+
+    public function showChangeEmailForm(){
+        return view('auth.passwords.changeemail');
+    }
+
+    public function changeEmail(Request $request){
+
+        if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
+            // The passwords matches
+            return redirect()->back()->with("error","Your password is not correct. Please try again.");
+        }
+
+        if(!strcmp($request->get('new-email'), $request->get('new-email_confirmation')) == 0)
+        {
+            return redirect()->back()->with("error","New email and confirmation email are not same. Please try again.");
+        }
+
+        $validatedData = $request->validate([
+            'current-password' => 'required',
+        ]);
+
+        //Change Password
+        $user = Auth::user();
+        $user->email = $request->get('new-email');
+        $user->save();
+
+        return redirect()->back()->with("success","Email changed successfully !");
+
+    }
 }

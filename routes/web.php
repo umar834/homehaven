@@ -63,7 +63,11 @@ Route::post('register', [
 Route::get('/changePassword','HomeController@showChangePasswordForm');
 Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
 
+Route::get('/changeEmail','HomeController@showChangeEmailForm');
+Route::post('/changeEmail','HomeController@changeEmail')->name('changeEmail');
+
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index');
 Route::get('/welcome', 'HomeController@welcome');
 Route::post('/savenightmode', 'HomeController@changeNightmode')->name('changeNightmode');
+Route::post('/saveuserimage', 'HomeController@storeimage')->name('storeimage');
