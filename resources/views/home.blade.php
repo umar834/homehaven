@@ -61,6 +61,15 @@
     
     <!--PHP CODE TO CHECK FOR LEAST NOT NULL VALUE-->
     @php
+
+    $watt = null;
+    $bill_increase = null;
+    $bill_decrease = null;
+    $increase = null;
+    $decrease = null;
+
+    if($power_data != null)
+    {
         if ($power_data->log_5)
         {
             $watt = $power_data->log_5;
@@ -126,7 +135,12 @@
         $bill_increase = null;
         $bill_decrease = null;
 
-        if($bill->predicted_amount > $lastmonthbill->amount)
+        if($bill == null)
+        {
+
+        }
+        else
+            if($bill->predicted_amount > $lastmonthbill->amount)
         {
             $bill_increase = $bill->predicted_amount - $lastmonthbill->amount;
             $bill_increase = ($bill_increase / $lastmonthbill->amount) * 100;
@@ -147,6 +161,7 @@
             }
             $bill_decrease = number_format((float)$bill_decrease, 2, '.', '');
         }
+    }
     @endphp
     <!--***********CONTENT MAIN DIV***********-->
     <div class="content-div col-lg-10 col-sm-9 col-xs-12 col-md-9">
@@ -156,6 +171,7 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 energydiv">
                 <h3>Energy currently being consumed</h3>
+                @if ($power_data != null)
                 <div class="GaugeMeter" id="PreviewGaugeMeter_4"
                         data-used="{{$watt}}"
                         data-total="1000"
@@ -173,9 +189,12 @@
                         data-label_color="#2c94e0"
                         >
                 </div>
+                @else 
+                    <h1 style="padding: 20% 0px; text-align: center; font-weight:300;">No Record Found</h1>
+                @endif
                 @if($increase != null)
                 <p><span class="powerconsumptionspan"><i class="fa fa-arrow-up"></i> {{$increase}}% increase</span> compared to yesterday</p>
-                @else
+                @elseif($decrease != null)
                 <p><span class="billpredictionspan"><i class="fa fa-arrow-down"></i> {{$decrease}}% decrease </span> compared to yesterday</p>
                 @endif
             </div>
@@ -184,16 +203,24 @@
                 <h3>Bill Predicitometer</h3>
                 <div class="currentprediciton">
                     <h4>Current Month Prediciton</h4>
+                @if ($bill != null)
                 <h1><span class="count"> {{$bill->predicted_amount}} </span><small style="font-size:22px"> PKR</small> </h1>
+                @else 
+                <h1 style="font-size: 19px; color: red;">No Record Found</h1>
+                @endif
                 @if($bill_increase != null)
                 <p><span style="color: red" class="powerconsumptionspan"><i class="fa fa-arrow-up"></i> {{$bill_increase}}% increase</span> compared to last month</p>
-                @else
+                @elseif (($bill_decrease != null))
                 <p><span style="color: blue"class="billpredictionspan"><i class="fa fa-arrow-down"></i> {{$bill_decrease}}% decrease </span> compared to last month</p>
                 @endif
                 </div>
                 <hr style="color: rgb(133, 133, 133);">
                 <div class="last6monthsprediciton">
+                    @if ($lastmonthbill != null)
                     <h4>Last Month Bill: <span class="count"> {{$lastmonthbill->amount}} </span><small> PKR</small><i class="fas fa-tachometer-alt dashboardicon"></i></i> </h4>
+                    @else
+                    <h4 style="font-size: 17px; color: red;">No Record Found</h4>
+                    @endif
                 </div>
             </div>
         </div>
@@ -278,6 +305,9 @@
 
         <div id="controls" style="overflow-x: hidden; overflow-y:auto; max-height: 100%;" class="tabcontent controlsdiv">
         <div style="margin-left: 10px; " class="row">
+        @if ($rooms->isEmpty())
+        <h1 style="font-weight: 300; width: 100%; padding: 20px; background: white; text-align: center; color: red;">No Device Found</h1>
+        @endif
         @foreach ($rooms as $room)         
             @php
                 $state = $room->state;
@@ -542,6 +572,11 @@
 
          <!--*********************NIGHTMODE MAIN TAB***********************-->
          <div id="nightmode" style="overflow-x: hidden; overflow-y:auto; max-height: 100%;" class="tabcontent nightmodemain">
+            
+        @if ($rooms->isEmpty())
+        <h1 style="font-weight: 300; width: 100%; padding: 20px; background: white; text-align: center; color: red;">No Device Found</h1>
+        
+        @else
             
         <form class="dirty-check" action="/savenightmode" method="post">
             @csrf
@@ -1024,7 +1059,7 @@
             </div> <!--END OF ROW-->
 
         </form>
-
+        @endif
          </div>
 
 

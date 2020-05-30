@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Hash;
 use App\Power_log;
+use App\User;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -25,16 +26,31 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    
     public function index()
     {
         $rooms = DB::table('rooms')->where('user_id', '=', Auth::user()->id)->get();
+
         $bill = DB::table('bill')->where('user_id', '=', Auth::user()->id)->orderby('date', 'desc')->first();
         $lastmonthbill = DB::table('bill')->where('user_id', '=', Auth::user()->id)->orderby('date', 'desc')
                             ->skip(1)->first();
 
-        $power = Power_log::where([['date', '=', '2020-04-28'], ['user_id','=', 2]])->firstOrFail();
+        $power = Power_log::where([['date', '=', '2020-04-28'], ['user_id','=', Auth::user()->id]])->get();
+
+        if (!$power->isEmpty())
         $previus_id = $power->id-1;
-        $yest_power = Power_log::where([['date', '2020-04-27'], ['user_id','=', 1]])->firstOrFail();
+
+        if ($power->isEmpty())
+        {
+            $power = null;
+        }
+        $yest_power = Power_log::where([['date', '2020-04-27'], ['user_id','=', Auth::user()->id]])->get();
+
+        if ($yest_power->isEmpty())
+        {
+            $yest_power = null;
+        }
+
         $nightstarttime = Auth::user()->Night_Start_Time;
         $nightendtime = Auth::user()->Night_End_Time;
         
@@ -48,9 +64,16 @@ class HomeController extends Controller
             'nightendtime' => $nightendtime
         );
        
-        if (Auth::user())
+        if (Auth::user() && Auth::user()->role != 'admin')
         {
             return view('home')->with($data);
+        }
+
+        else if (Auth::user() && Auth::user()->role == 'admin')
+        {
+            $users_active = User::where([['role', '=', 'user'], ['status','=', 'active']])->get();
+          
+            return view('admindashboard')->with('users_active',$users_active);
         }
         else {
             return view('auth.login');
