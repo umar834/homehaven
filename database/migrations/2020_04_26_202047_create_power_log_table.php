@@ -16,7 +16,7 @@ class CreatePowerLogTable extends Migration
         Schema::create('power_log', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->date('date');
             $table->integer('log_0')->nullable();
             $table->integer('log_1')->nullable();

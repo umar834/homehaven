@@ -19,7 +19,7 @@ class CreateBillTable extends Migration
             $table->double('amount');
             $table->double('predicted_amount');
             $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->float('power_consumption');
         });
     }

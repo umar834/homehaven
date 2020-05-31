@@ -57,7 +57,16 @@
 
     <!--***********CONTENT MAIN DIV***********-->
     <div class="content-div col-lg-10 col-sm-9 col-xs-12 col-md-9">
-
+        @if (session('success'))
+                            <div class="alert alert-success hidecroosss">
+                                {{ session('success') }}
+                            </div>
+        @endif
+        @if (session('error'))
+                        <div class="alert alert-danger hidecroosss">
+                            {{ session('error') }}
+                        </div>
+        @endif
         <!--MAIN WINDOW TAB-->
         <div style="padding: 10px" class="tabcontent active1" id="mainwindow" >
 
@@ -81,6 +90,7 @@
             </div>
 
             <div class="activeusers">
+                <h3 style="font-size: 23px; font-weight: 300">Active Users</h3>
                 <table class="table">
                     <thead class="thead-light ">
                     <tr>
@@ -95,15 +105,47 @@
                     <tbody>
                         @foreach($users_active as $user)
                         <tr>
+                            @php
+                            $new_date = date("d-m-Y",strtotime($user->created_at));
+                            @endphp
                             <td>{{$user->id}}</td>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
-                            <td>{{$user->created_at}}</td>
-                            <td><button style="margin: 0px;" class="btn btn-primary">Edit</button></td>
+                            <td>{{$new_date}}</td>
+                            <td><p><a class="button11" href="#popup{{$user->id}}">Edit</a></p></td>
+
+                            <div id="popup{{$user->id}}" class="overlay11 light11">
+	                            <a class="cancel" href="#"></a>
+	                            <div class="popup">
+                                    <h2>Edit user</h2>
+                                    <a class="close" href="#">&times;</a>
+		                            <div class="content">
+                                      <label for="name">Name: </label>
+                                      <input class="form-control" type="text" name="name" value="{{$user->name}}">
+                                      <label for="email">Email: </label>
+                                      <input class="form-control" type="email" name="email" value="{{$user->email}}">
+                                      <label for="status">Status: </label>
+                                      <select class="form-control" name="status">
+                                        <option selected="selected" value="active">Active</option>
+                                        <option value="disabled">Disabled</option>  
+                                      </select>
+                                      <div>
+                                      <button style="margin-top: 10px; float: right" class="btn btn-primary" type="submit">Save</button>
+                                      
+                                      <form onsubmit="return confirm('All the data of this user will be deleted. Do you really want to delete this user?');" action="/deleteuser/{{$user->id}}" method="post">
+                                        @csrf
+                                        <button value="confirm" style="margin-top: 10px; float: left" class="btn btn-danger" type="submit">Delete User</button>
+                                      </form>
+                                      </div>
+		                            </div>
+	                            </div>
+                            </div>
                         </tr>
                         @endforeach
+                       
                     </tbody>
                 </table>
+                {{$users_active->links()}}
             </div>
 
         </div>
@@ -189,5 +231,6 @@ $('input[type=file]').change(function(){
       $('button').attr('disabled',false);
     }
 })
+
 </script>
 @endsection

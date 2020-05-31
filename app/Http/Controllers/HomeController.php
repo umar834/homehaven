@@ -71,7 +71,7 @@ class HomeController extends Controller
 
         else if (Auth::user() && Auth::user()->role == 'admin')
         {
-            $users_active = User::where([['role', '=', 'user'], ['status','=', 'active']])->get();
+            $users_active = User::where([['role', '=', 'user'], ['status','=', 'active']])->paginate(8);
           
             return view('admindashboard')->with('users_active',$users_active);
         }
@@ -289,5 +289,11 @@ class HomeController extends Controller
 
         return redirect()->back()->with("success","Email changed successfully !");
 
+    }
+
+    public function deleteuser($userid)
+    {
+        DB::table('users')->where('id', $userid)->delete();
+        return redirect()->back()->with("success","User deleted successfully!");
     }
 }

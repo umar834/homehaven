@@ -2,3 +2,105 @@
     background-color: white;
     padding: 10px;
 }
+
+.overlay11 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    transition: opacity 200ms;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .popup h2 {
+      font-size: 18px;
+      font-weight: 400;
+  }
+
+  .overlay11.light11 {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .overlay11 .cancel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+  }
+
+  .overlay11:target {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .popup {
+    margin: 75px auto;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #666;
+    max-width: 600px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+
+  .light11 .popup {
+    border-color: #aaa;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  }
+
+  .popup .content {
+    max-height: 400px;
+    overflow: auto;
+  }
+
+  .popup p {
+    margin: 0 0 1em;
+  }
+
+  .popup p:last-child {
+    margin: 0;
+  }
+
+  .popup .close {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 20px;
+    right: 20px;
+    opacity: 0.8;
+    transition: all 200ms;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666;
+  }
+
+  .popup .close:hover {
+    opacity: 1;
+  }
+
+  .button11 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    padding: 5px 10px;
+    border: 1px solid #aaa;
+    background-color: #eee;
+    background-image: linear-gradient(top, #fff, #f0f0f0);
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    color: #666;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #fff;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+  }
+  .button11:hover {
+    border-color: #999;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+  .button11:active {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) inset;
+  }

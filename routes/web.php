@@ -71,3 +71,5 @@ Route::get('/home', 'HomeController@index');
 Route::get('/welcome', 'HomeController@welcome');
 Route::post('/savenightmode', 'HomeController@changeNightmode')->name('changeNightmode');
 Route::post('/saveuserimage', 'HomeController@storeimage')->name('storeimage');
+
+Route::post('/deleteuser/{userid}', 'HomeController@deleteuser');

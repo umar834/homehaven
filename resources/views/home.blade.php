@@ -16,8 +16,8 @@
 </script>
 @section('content')
 @if (session('success'))
-<div style="text-align: center" class="hidecroosss">
-    <h3 style="color: #2779ff; padding: 20px"> {{ session('success') }}</h3>
+<div class="alert alert-danger hidecroosss">
+    <h3> {{ session('success') }}</h3>
 </div>
 @endif
 <div class="row maindiv">
