@@ -8,6 +8,10 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+use App\Mail\VerifyEmail;
+use Mail;
 
 class RegisterController extends Controller
 {
@@ -39,9 +43,25 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
     }
 
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath())->with("success","New User has been registered.");
+    }
+    
     /**
      * Get a validator for an incoming registration request.
      *
@@ -65,12 +85,29 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
+            'role' => $data['role'],
+            'status' => $data['status'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-    }
 
+        $password = $data['password'];
+        $email = $data['email'];
+
+        $data11 = ['foo' => 'baz'];
+
+        $to_name = $data['name'];
+        $to_email = $data['email'];
+        $data = array('name'=> $to_name, "body" => "Your Account on HomeHaven has been created. Your Password is: ".$data['password']);
     
+        Mail::send('mail', $data, function($message) use ($to_name, $to_email) {
+        $message->to($to_email, $to_name)
+                ->subject('Account created on HomeHaven');
+        $message->from('gulzarumar21@gmail.com','HomeHaven');
+    });
+
+        return $user;
+    }    
 }

@@ -44,8 +44,8 @@
 
         <div class="menus">
             <h4>Dashboard</h4>
-            <button onclick="openCity(event, 'mainwindow')" class="tablinks active"><i class="fas fa-tachometer-alt"></i>&nbsp; Main Window</button><br>
-            <button onclick="openCity(event, 'controls')" class="tablinks"><i class="fas fa-dharmachakra"></i></i>&nbsp; Controls</button><br>
+            <button onclick="openCity(event, 'mainwindow')" class="tablinks active"><i class="fas fa-tachometer-alt"></i>&nbsp; Manage Users</button><br>
+            <button onclick="openCity(event, 'controls')" class="tablinks"><i class="fas fa-dharmachakra"></i></i>&nbsp; Manage Rooms</button><br>
             <button onclick="openCity(event, 'nightmode')" class="tablinks"><i class="fas fa-moon"></i></i>&nbsp; Night Mode</button><br>
             <button onclick="openCity(event, 'settings')" class="tablinks"><i class="fa fa-wrench"></i>&nbsp; Settings</button><br>
             <button href="{{ route('logout') }}"
@@ -57,8 +57,23 @@
 
     <!--***********CONTENT MAIN DIV***********-->
     <div class="content-div col-lg-10 col-sm-9 col-xs-12 col-md-9">
+        @error('name')
+        <div class="alert alert-danger hidecroosss">
+                            Name is Invalid.
+        </div>
+         @enderror
+         @error('email')
+            <div class="alert alert-danger hidecroosss">
+                The email has already been taken.
+            </div>
+         @enderror
+         @error('password')
+            <div class="alert alert-danger hidecroosss">
+                The password confirmation does not match.
+            </div>
+         @enderror
         @if (session('success'))
-                            <div class="alert alert-success hidecroosss">
+                            <div style="margin-top: 10px" class="alert alert-success hidecroosss">
                                 {{ session('success') }}
                             </div>
         @endif
@@ -85,7 +100,91 @@
             </div>
 
             <div class="col-md-3">
-                <button type="submit" class="btn btn-primary" id="newaccount">Create New Account</button>
+                <p><a class="btn btn-primary" href="#popupnew">Create New Account</a></p>
+            </div>
+
+
+            <div id="popupnew" class="overlay11 light11">
+	            <a class="cancel" href="#"></a>
+	            <div class="popup">
+                    <h2>Edit user</h2>
+                    <a class="close" href="#">&times;</a>
+		            <div class="content">
+                    @php
+                    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+                    $pass = array(); //remember to declare $pass as an array
+                    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+                    for ($i = 0; $i < 8; $i++) {
+                        $n = rand(0, $alphaLength);
+                        $pass[] = $alphabet[$n];
+                    }
+                    $pass = implode($pass); //turn the array into a string
+                    @endphp
+
+                    <form method="POST" action="{{ route('register') }}">
+                    @csrf
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control is-valid" value="{{$pass}}" name="password" required autocomplete="new-password" readonly>
+                                    <span class="valid-feedback">
+                                        <strong>Password is auto-generated and will be sent to user through email.</strong>
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" value="{{$pass}}" required autocomplete="new-password" readonly>
+                            </div>
+                            <input type="text" name="role" value="user" hidden>
+                            <input type="text" name="status" value="active" hidden>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Register') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+
+		            </div>
+	            </div>
             </div>
             </div>
 

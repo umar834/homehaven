@@ -71,7 +71,7 @@ class HomeController extends Controller
 
         else if (Auth::user() && Auth::user()->role == 'admin')
         {
-            $users_active = User::where([['role', '=', 'user'], ['status','=', 'active']])->paginate(8);
+            $users_active = User::where([['role', '=', 'user'], ['status','=', 'active']])->paginate(5);
           
             return view('admindashboard')->with('users_active',$users_active);
         }
