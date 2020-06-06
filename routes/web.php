@@ -92,3 +92,5 @@ Route::post('/savenightmode', 'HomeController@changeNightmode')->name('changeNig
 Route::post('/saveuserimage', 'HomeController@storeimage')->name('storeimage');
 
 Route::post('/deleteuser/{userid}', 'HomeController@deleteuser');
+Route::post('/updateuser', 'HomeController@updateuser');
+Route::post('/searchuser', 'HomeController@searchuser');

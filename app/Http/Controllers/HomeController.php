@@ -53,7 +53,6 @@ class HomeController extends Controller
 
         $nightstarttime = Auth::user()->Night_Start_Time;
         $nightendtime = Auth::user()->Night_End_Time;
-        
         $data = array(
             'power_data' => $power,
             'yest_power' => $yest_power,
@@ -71,9 +70,18 @@ class HomeController extends Controller
 
         else if (Auth::user() && Auth::user()->role == 'admin')
         {
-            $users_active = User::where([['role', '=', 'user'], ['status','=', 'active']])->paginate(5);
-          
-            return view('admindashboard')->with('users_active',$users_active);
+            $users_active = User::where([['role', '=', 'user']])->paginate(6);
+            if ($users_active->isEmpty())
+            {
+                $users_active = null;
+            }
+
+            $showallusers = null;
+            $data = array(
+                'users_active' => $users_active,
+                'showallusers' => $showallusers
+            );
+            return view('admindashboard')->with($data);
         }
         else {
             return view('auth.login');
@@ -295,5 +303,41 @@ class HomeController extends Controller
     {
         DB::table('users')->where('id', $userid)->delete();
         return redirect()->back()->with("success","User deleted successfully!");
+    }
+
+    public function updateuser(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+        ]);
+        $user_id = $request['id'];
+        $name = $request['name'];
+        $email = $request['email'];
+        $status = $request['status'];
+
+        DB::update('update users set name = ?, email = ?, status = ? where id = ?',[$name, $email, $status, $user_id]);
+
+        return redirect()->back()->with("success","User Updated successfully!");;
+    }
+
+    public function searchuser(Request $request)
+    {
+        $search = $request['name'];
+        $search = "%".$search."%";
+        $users_active = User::where([['role', '=', 'user'], ['name','like', $search]])->paginate(6);
+  
+        if ($users_active->isEmpty())
+        {
+            $users_active = null;
+        }
+
+        $showallusers = 1;
+        $data = array(
+            'users_active' => $users_active,
+            'showallusers' => $showallusers
+        );
+        return view('admindashboard')->with($data);
     }
 }

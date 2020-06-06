@@ -82,15 +82,18 @@
                             {{ session('error') }}
                         </div>
         @endif
+
+
         <!--MAIN WINDOW TAB-->
         <div style="padding: 10px" class="tabcontent active1" id="mainwindow" >
 
         <div class="activeusersmain">
             <div class="row" style="width: 100%;">
             <div class="col-md-4 form-group">
-                <form class="navbar-form" role="search">
+                <form action="/searchuser" method="post" class="navbar-form" role="search">
+                    @csrf
                     <div class="form-group input-group col-md-12">
-                        <input type="text" class="form-control" placeholder="Search users" name="q" autofocus>
+                        <input type="text" class="form-control" placeholder="Search users" name="name">
                         <div class="input-group-btn">
                             <button style="background-color: #79abfa; padding: 10px; border-radius: 0px 10px 10px 0px;" 
                             class="btn btn-default" type="submit"><i style="padding: 0px 10px; color:white;" class="fa fa-search"></i></button>
@@ -100,6 +103,9 @@
             </div>
 
             <div class="col-md-3">
+                @if($showallusers == 1)
+                <p><a class="btn btn-secondary" href="/">Show All Users</a></p>
+                @endif
                 <p><a class="btn btn-primary" href="#popupnew">Create New Account</a></p>
             </div>
 
@@ -189,13 +195,17 @@
             </div>
 
             <div class="activeusers">
-                <h3 style="font-size: 23px; font-weight: 300">Active Users</h3>
+                <h3 style="font-size: 23px; font-weight: 300">Users</h3>
+                @if($users_active == null)
+                <h2 style="font-weight: 300">No User Found</h2>
+                @else
                 <table class="table">
                     <thead class="thead-light ">
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>    
+                        <th>Status</th>
                         <th>Created on</th>
                         <th></th>
                     </tr>
@@ -210,6 +220,7 @@
                             <td>{{$user->id}}</td>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
+                            <td>{{$user->status}}</td>
                             <td>{{$new_date}}</td>
                             <td><p><a class="button11" href="#popup{{$user->id}}">Edit</a></p></td>
 
@@ -218,18 +229,38 @@
 	                            <div class="popup">
                                     <h2>Edit user</h2>
                                     <a class="close" href="#">&times;</a>
-		                            <div class="content">
+                                    <div class="content">
+
+                                    <form action="/updateuser" method="post">
+                                    @csrf
+                                    <input type="number" name="id" value="{{$user->id}}" hidden>
                                       <label for="name">Name: </label>
-                                      <input class="form-control" type="text" name="name" value="{{$user->name}}">
+                                      <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" value="{{$user->name}}">
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                       <label for="email">Email: </label>
-                                      <input class="form-control" type="email" name="email" value="{{$user->email}}">
+                                      <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{$user->email}}">
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                       <label for="status">Status: </label>
                                       <select class="form-control" name="status">
-                                        <option selected="selected" value="active">Active</option>
-                                        <option value="disabled">Disabled</option>  
-                                      </select>
-                                      <div>
+                                        @if($user->status == "active")
+                                        <option value="active" selected>Active</option>
+                                        <option value="disabled">Disabled</option>
+                                        @else  
+                                        <option value="active">Active</option>
+                                        <option value="disabled" selected>Disabled</option>  
+                                        @endif
+                                      </select> 
+
                                       <button style="margin-top: 10px; float: right" class="btn btn-primary" type="submit">Save</button>
+                                    </form>
                                       
                                       <form onsubmit="return confirm('All the data of this user will be deleted. Do you really want to delete this user?');" action="/deleteuser/{{$user->id}}" method="post">
                                         @csrf
@@ -245,18 +276,211 @@
                     </tbody>
                 </table>
                 {{$users_active->links()}}
+                @endif
             </div>
+
 
         </div>
             
         </div>
 
 
-        <!--*********************CONTROLS MAIN TAB***********************-->
+        <!--*********************MANAGE ROOMS TAB***********************-->
 
 
         <div id="controls" style="overflow-x: hidden; overflow-y:auto; max-height: 100%;" class="tabcontent controlsdiv">
-            <h1>Content 2</h1>
+            
+            <div class="activeusersmain">
+            <div class="row" style="width: 100%;">
+            <div class="col-md-4 form-group">
+                <form action="/searchuser" method="post" class="navbar-form" role="search">
+                    @csrf
+                    <div class="form-group input-group col-md-12">
+                        <input type="text" class="form-control" placeholder="Search users" name="name">
+                        <div class="input-group-btn">
+                            <button style="background-color: #79abfa; padding: 10px; border-radius: 0px 10px 10px 0px;" 
+                            class="btn btn-default" type="submit"><i style="padding: 0px 10px; color:white;" class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-3">
+                @if($showallusers == 1)
+                <p><a class="btn btn-secondary" href="/">Show All Users</a></p>
+                @endif
+                <p><a class="btn btn-primary" href="#popupnew">Create New Account</a></p>
+            </div>
+
+
+            <div id="popupnew" class="overlay11 light11">
+	            <a class="cancel" href="#"></a>
+	            <div class="popup">
+                    <h2>Edit user</h2>
+                    <a class="close" href="#">&times;</a>
+		            <div class="content">
+                    @php
+                    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+                    $pass = array(); //remember to declare $pass as an array
+                    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+                    for ($i = 0; $i < 8; $i++) {
+                        $n = rand(0, $alphaLength);
+                        $pass[] = $alphabet[$n];
+                    }
+                    $pass = implode($pass); //turn the array into a string
+                    @endphp
+
+                    <form method="POST" action="{{ route('register') }}">
+                    @csrf
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control is-valid" value="{{$pass}}" name="password" required autocomplete="new-password" readonly>
+                                    <span class="valid-feedback">
+                                        <strong>Password is auto-generated and will be sent to user through email.</strong>
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" value="{{$pass}}" required autocomplete="new-password" readonly>
+                            </div>
+                            <input type="text" name="role" value="user" hidden>
+                            <input type="text" name="status" value="active" hidden>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Register') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+
+		            </div>
+	            </div>
+            </div>
+            </div>
+
+            <div class="activeusers">
+                <h3 style="font-size: 23px; font-weight: 300">Users</h3>
+                @if($users_active == null)
+                <h2 style="font-weight: 300">No User Found</h2>
+                @else
+                <table class="table">
+                    <thead class="thead-light ">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>    
+                        <th>Status</th>
+                        <th>Created on</th>
+                        <th></th>
+                    </tr>
+                    </thead>    
+
+                    <tbody>
+                        @foreach($users_active as $user)
+                        <tr>
+                            @php
+                            $new_date = date("d-m-Y",strtotime($user->created_at));
+                            @endphp
+                            <td>{{$user->id}}</td>
+                            <td>{{$user->name}}</td>
+                            <td>{{$user->email}}</td>
+                            <td>{{$user->status}}</td>
+                            <td>{{$new_date}}</td>
+                            <td><p><a class="button11" href="#popup{{$user->id}}">Edit</a></p></td>
+
+                            <div id="popup{{$user->id}}" class="overlay11 light11">
+	                            <a class="cancel" href="#"></a>
+	                            <div class="popup">
+                                    <h2>Edit user</h2>
+                                    <a class="close" href="#">&times;</a>
+                                    <div class="content">
+
+                                    <form action="/updateuser" method="post">
+                                    @csrf
+                                    <input type="number" name="id" value="{{$user->id}}" hidden>
+                                      <label for="name">Name: </label>
+                                      <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" value="{{$user->name}}">
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                      <label for="email">Email: </label>
+                                      <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{$user->email}}">
+                                        @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                      <label for="status">Status: </label>
+                                      <select class="form-control" name="status">
+                                        @if($user->status == "active")
+                                        <option value="active" selected>Active</option>
+                                        <option value="disabled">Disabled</option>
+                                        @else  
+                                        <option value="active">Active</option>
+                                        <option value="disabled" selected>Disabled</option>  
+                                        @endif
+                                      </select> 
+
+                                      <button style="margin-top: 10px; float: right" class="btn btn-primary" type="submit">Save</button>
+                                    </form>
+                                      
+                                      <form onsubmit="return confirm('All the data of this user will be deleted. Do you really want to delete this user?');" action="/deleteuser/{{$user->id}}" method="post">
+                                        @csrf
+                                        <button value="confirm" style="margin-top: 10px; float: left" class="btn btn-danger" type="submit">Delete User</button>
+                                      </form>
+                                      </div>
+		                            </div>
+	                            </div>
+                            </div>
+                        </tr>
+                        @endforeach
+                       
+                    </tbody>
+                </table>
+                {{$users_active->links()}}
+                @endif
+            </div>
         </div>
 
          <!--*********************NIGHTMODE MAIN TAB***********************-->

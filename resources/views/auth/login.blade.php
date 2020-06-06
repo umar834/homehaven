@@ -12,14 +12,14 @@
         <form class="login-form" action="{{ route('login') }}" method="POST">
             @csrf
 
-            <input id="email" type="email" class="login-input @error('email') is-invalid @enderror" name="email" placeholder="User" value="{{ old('email') }}" required autocomplete="email" autofocus>
+            <input id="email" type="email" class="login-input form-control @error('email') is-invalid @enderror" name="email" placeholder="Email" value="{{ old('email') }}" required autocomplete="email" autofocus>
             @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
             @enderror
 
-            <input id="password" type="password" class="login-input @error('password') is-invalid @enderror" placeholder="Password" name="password" required autocomplete="current-password">
+            <input id="password" type="password" class="login-input form-control @error('password') is-invalid @enderror" placeholder="Password" name="password" required autocomplete="current-password">
 
             @error('password')
                 <span class="invalid-feedback" role="alert">
