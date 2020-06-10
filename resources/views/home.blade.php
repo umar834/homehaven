@@ -1116,8 +1116,6 @@ $(this).prop('Counter',0).animate({
     }
 });
 });
-document.getElementById("starttime").defaultValue = "20:00";
-document.getElementById("stoptime").defaultValue = "06:00";
 /*UPLOAD IMAGE-DP*/
 function readURL(input) {
 if (input.files && input.files[0]) {

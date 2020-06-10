@@ -71,21 +71,85 @@ class HomeController extends Controller
         else if (Auth::user() && Auth::user()->role == 'admin')
         {
             $users_active = User::where([['role', '=', 'user']])->paginate(6);
+            $all_users = User::where([['role', '=', 'user']])->get();
             if ($users_active->isEmpty())
             {
                 $users_active = null;
             }
-
+            $user_rooms = DB::table('rooms')->orderBy('user_id', 'asc')->paginate(20);
+            if ($user_rooms->isEmpty())
+            {
+                $user_rooms = null;
+            }
             $showallusers = null;
+            $showallrooms = null;
             $data = array(
                 'users_active' => $users_active,
-                'showallusers' => $showallusers
+                'showallusers' => $showallusers,
+                'user_rooms' => $user_rooms,
+                'showallrooms' => $showallrooms,
+                'all_users' => $all_users
             );
             return view('admindashboard')->with($data);
         }
         else {
             return view('auth.login');
         }
+    }
+
+    public function searchuser(Request $request)
+    {
+        $search = $request['name'];
+        $search = "%".$search."%";
+        $users_active = User::where([['role', '=', 'user'], ['name','like', $search]])->paginate(6);
+  
+        if ($users_active->isEmpty())
+        {
+            $users_active = null;
+        }
+        $user_rooms = DB::table('rooms')->orderBy('user_id', 'asc')->paginate(20);
+        if ($user_rooms->isEmpty())
+        {
+            $user_rooms = null;
+        }
+        $all_users = User::where([['role', '=', 'user']])->get();
+        $showallusers = 1;
+        $showallrooms = null;
+        $data = array(
+            'users_active' => $users_active,
+            'showallusers' => $showallusers,
+            'user_rooms' => $user_rooms,
+            'showallrooms' => $showallrooms,
+            'all_users' => $all_users
+        );
+        return view('admindashboard')->with($data);
+    }
+
+    public function searchuserbyid(Request $request)
+    {
+        $search = $request['id'];
+        $users_active = User::where([['role', '=', 'user']])->paginate(6);
+        if ($users_active->isEmpty())
+        {
+            $users_active = null;
+        }
+
+        $user_rooms = DB::table('rooms')->where('user_id', '=', $search)->orderBy('user_id', 'asc')->paginate(20);
+        if ($user_rooms->isEmpty())
+        {
+            $user_rooms = null;
+        }
+        $all_users = User::where([['role', '=', 'user']])->get();
+        $showallusers = null;
+        $showallrooms = 1;
+        $data = array(
+            'users_active' => $users_active,
+            'showallusers' => $showallusers,
+            'user_rooms' => $user_rooms,
+            'showallrooms' => $showallrooms,
+            'all_users' => $all_users
+        );
+        return view('admindashboard')->with($data);
     }
 
     /********************SAVE NIGHT MODE DATA TO TABLE *********************/
@@ -322,22 +386,64 @@ class HomeController extends Controller
         return redirect()->back()->with("success","User Updated successfully!");;
     }
 
-    public function searchuser(Request $request)
+
+    public function updateroom(Request $request)
     {
-        $search = $request['name'];
-        $search = "%".$search."%";
-        $users_active = User::where([['role', '=', 'user'], ['name','like', $search]])->paginate(6);
-  
-        if ($users_active->isEmpty())
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        $room_id = $request['id'];
+        $name = $request['name'];
+        $dev1 = $request['dev1'];
+        $dev2 = $request['dev2'];
+        $dev3 = $request['dev3'];
+        $dev4 = $request['dev4'];
+        $devdim = $request['devdim'];
+        
+
+        DB::update('update rooms set name = ?, dev1_type = ?, dev2_type = ?, dev3_type = ?, dev4_type = ?, dim_type = ? where id = ?',[$name, $dev1, $dev2, $dev3, $dev4, $devdim, $room_id]);
+
+        return redirect()->back()->with("success","Room Updated successfully!");
+    }
+
+    public function addnewroom(Request $request)
+    {
+        $user_id = $request['user_id'];
+        $rooms = DB::table('rooms')->where('user_id', $user_id)->orderby('room_index', 'DESC')->first();
+        if ($rooms == null)
         {
-            $users_active = null;
+            $room_index = 0;
+        }
+        elseif($rooms->room_index < 7)
+        {
+            $room_index = $rooms->room_index + 1;
+        }
+        else
+        {
+            return redirect()->back()->with("error","This user has reached maximum of 8 rooms limit");
         }
 
-        $showallusers = 1;
-        $data = array(
-            'users_active' => $users_active,
-            'showallusers' => $showallusers
-        );
-        return view('admindashboard')->with($data);
+        $room_name = $request['name'];
+        $desc = $request['desc'];
+        $device_1 = $request['dev1'];
+        $device_2 = $request['dev2'];
+        $device_3 = $request['dev3'];
+        $device_4 = $request['dev4'];
+        $dim_type = $request['devdim'];
+        $changed_at = now();
+        $state = 8;
+        $night_state = 8;
+        $morning_state = 8;
+        DB::insert('insert into rooms (room_index, dev1_type, dev2_type, dev3_type, dev4_type, dim_type, state, night_state, morning_state, name, description, user_id, changed_at)
+         values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [$room_index, $device_1, $device_2, $device_3, $device_4, $dim_type, $state, $night_state, $morning_state, $room_name, $desc, $user_id, $changed_at]);
+        return redirect()->back()->with("success","New room added successfully!");
+    }
+
+    public function deleteroom(Request $request)
+    {
+        $id = $request['room_id'];
+        DB::table('rooms')->where('id', $id)->delete();
+        return redirect()->back()->with("success","Room deleted successfully!");
     }
 }
