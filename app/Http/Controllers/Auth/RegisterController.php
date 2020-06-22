@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use App\Mail\VerifyEmail;
 use Mail;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -91,6 +92,7 @@ class RegisterController extends Controller
             'status' => $data['status'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'token' => Str::random(16),
         ]);
 
         $password = $data['password'];
