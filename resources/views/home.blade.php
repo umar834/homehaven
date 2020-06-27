@@ -16,7 +16,7 @@
 </script>
 @section('content')
 @if (session('success'))
-<div class="alert alert-danger hidecroosss">
+<div class="alert alert-success hidecroosss">
     <h3> {{ session('success') }}</h3>
 </div>
 @endif
@@ -1005,7 +1005,7 @@
                             <h6>End State: <span>
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
                                   
-                                    @if($dev5_endstate == 0)
+                                    @if($dev4_endstate == 0)
                                     <input type="checkbox" name="end4{{$room->id}}" class="switch-input">
                                     @else
                                     <input type="checkbox" name="end4{{$room->id}}" class="switch-input" checked>
