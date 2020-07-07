@@ -99,3 +99,5 @@ Route::post('/updateroom', 'HomeController@updateroom');
 Route::post('/searchuserbyid', 'HomeController@searchuserbyid');
 Route::post('/addnewroom', 'HomeController@addnewroom');
 Route::post('/deleteroom', 'HomeController@deleteroom');
+
+Route::get('/test', 'HomeController@index');

@@ -443,6 +443,20 @@ class HomeController extends Controller
     public function deleteroom(Request $request)
     {
         $id = $request['room_id'];
+        $current_room = DB::table('rooms')->where('id', $id)->first();
+        $room_index = $current_room->room_index;
+        $user_id = $current_room->user_id;
+        
+        $rooms = DB::table('rooms')->where([['user_id', '=', $user_id], ['room_index', '>' ,$room_index]])->get();
+        if(!$rooms->isEmpty())
+        {
+            foreach($rooms as $room)
+            {
+                $new_index =  $room->room_index - 1;
+                DB::update('update rooms set room_index = ? where id = ?', [$new_index, $room->id]);
+            }
+        }
+
         DB::table('rooms')->where('id', $id)->delete();
         return redirect()->back()->with("success","Room deleted successfully!");
     }
