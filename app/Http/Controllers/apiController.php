@@ -39,17 +39,7 @@ class apiController extends Controller
             return "invalid ";
         }
         if (Hash::check($request->get('password'), $user->password)) {
-            $uid = $user->id;
-            $rooms = DB::table('rooms')->where('user_id', '=', $uid)->get();
-            $rooms_count = count($rooms);
-            $rooms_str = "";
-            foreach ($rooms as $key => $value) {
-                $rooms_str .= (':' . $value->dev1_type . $value->dev2_type .
-                    $value->dev3_type . $value->dev4_type . $value->dim_type);
-            }
-            //dump($rooms_str);
-            //dd($rooms);
-            return 'o' . $user->token . ':' . $rooms_count . $rooms_str . 'k';
+            return 'o' . $user->token . 'k';
         }
         return "invalid";
     }
@@ -83,10 +73,34 @@ class apiController extends Controller
         return "invalid";
     }
 
+    public function getrinfo(Request $request)
+    {
+        $email = $request->get('email');
+        $user = DB::table('users')->where('email', '=', $email)->first();
+        if ($user == null) {
+            return "invalid ";
+        }
+        if ($request->get('token') === $user->token) {
+            $uid = $user->id;
+            $rooms = DB::table('rooms')->where('user_id', '=', $uid)->get();
+            $rooms_count = count($rooms);
+            $rooms_str = "";
+            foreach ($rooms as $key => $value) {
+                $rooms_str .= (':' . $value->dev1_type . $value->dev2_type .
+                    $value->dev3_type . $value->dev4_type . $value->dim_type . sprintf(":%03d", $value->state));
+            }
+            //dump($rooms_str);
+            //dd($rooms);
+            return 'o' . $rooms_str . 'k';
+        }
+        return "invalid";
+    }
+
 
     public function test(Request $request)
     {
 
+        dump(Str::random(32));
         $last_log = DB::table('power_log')->where('user_id', '=', '1')->latest('date')->first();
         $scnd_last_log = DB::table('power_log')->where('user_id', '=', '1')->latest('date')->skip('1')->first();
 

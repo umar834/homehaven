@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="{{ asset('css/Userdashboard.css') }}">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> 
 <script src="{{ asset('js/GaugeMeter.js')}}"></script> 
 <script src="{{ asset('js/userdashboard.js')}}"></script> 
@@ -9,10 +10,28 @@
 <script>
     $( document ).ready(function() {
         $('form.dirty-check').areYouSure();
+        $.ajaxSetup({
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+        });
 });
     setTimeout(function() {
     $('.hidecroosss').fadeOut('slow');
 }, 5000); 
+
+function update_state(room_index, device, element){
+    //alert(room_index);
+    state = $(element).is(':checked');
+    $.ajax({
+               type:'POST',
+               url:'/abc',
+               data:{room_index,device,state},
+               success:function(data) {
+                alert(data);
+               }
+            });
+}
 </script>
 @section('content')
 @if (session('success'))
@@ -334,9 +353,9 @@
                     <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
                             <label class="switch controlswitch">
                                 @if($dev1_state == 0)
-                                <input type="checkbox" class="switch-input">
+                                <input onclick = 'update_state("{{$room->room_index}}",1,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",1,this)' type="checkbox" class="switch-input" checked>
                                 @endif
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
@@ -350,9 +369,9 @@
                             <label class="switch controlswitch">
 
                                 @if($dev1_state == 0)
-                                <input type="checkbox" class="switch-input">
+                                <input onclick = 'update_state("{{$room->room_index}}",1,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",1,this)' type="checkbox" class="switch-input" checked>
                                 @endif
                                 
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
@@ -367,9 +386,9 @@
                             <label class="switch controlswitch">
                                 
                                 @if($dev1_state == 0)
-                                <input type="checkbox" class="switch-input">
+                                <input onclick = 'update_state("{{$room->room_index}}",1,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",1,this)' type="checkbox" class="switch-input" checked>
                                 @endif
                                 
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
@@ -387,9 +406,9 @@
                             <label class="switch controlswitch">
                                 
                                 @if($dev2_state == 0)
-                                <input type="checkbox" class="switch-input">
+                                <input onclick = 'update_state("{{$room->room_index}}",2,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",2,this)' type="checkbox" class="switch-input" checked>
                                 @endif
 
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
@@ -402,11 +421,11 @@
                         <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
                         
                             <label class="switch controlswitch">
-                                
-                                @if($dev2_state == 0)
-                                <input type="checkbox" class="switch-input">
+                                   
+                            @if($dev2_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",2,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",2,this)' type="checkbox" class="switch-input" checked>
                                 @endif
                                 
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
@@ -419,11 +438,11 @@
                     <div class="controldiv">
                         <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
                             <label class="switch controlswitch">
-                                
-                                @if($dev2_state == 0)
-                                <input type="checkbox" class="switch-input">
+                                   
+                            @if($dev2_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",2,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",2,this)' type="checkbox" class="switch-input" checked>
                                 @endif
                                 
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
@@ -439,11 +458,11 @@
                     <div class="controldiv">
                     <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
                             <label class="switch controlswitch">
-                                
-                                @if($dev3_state == 0)
-                                <input type="checkbox" class="switch-input">
+                                  
+                            @if($dev3_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",3,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",3,this)' type="checkbox" class="switch-input" checked>
                                 @endif
 
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
@@ -456,11 +475,11 @@
                         <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
                         
                             <label class="switch controlswitch">
-                               
-                                @if($dev3_state == 0)
-                                <input type="checkbox" class="switch-input">
+                                   
+                            @if($dev3_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",3,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",3,this)' type="checkbox" class="switch-input" checked>
                                 @endif
                                 
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
@@ -473,13 +492,13 @@
                     <div class="controldiv">
                         <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
                             <label class="switch controlswitch">
-
-                                @if($dev3_state == 0)
-                                <input type="checkbox" class="switch-input">
+     
+                            @if($dev3_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",3,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",3,this)' type="checkbox" class="switch-input" checked>
                                 @endif
-                                
+
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
@@ -493,11 +512,11 @@
                     <div class="controldiv">
                     <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
                             <label class="switch controlswitch">
-
-                                @if($dev4_state == 0)
-                                <input type="checkbox" class="switch-input">
+     
+                            @if($dev4_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input" checked>
                                 @endif
 
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
@@ -511,12 +530,13 @@
                        
                             <label class="switch controlswitch">
 
-                                @if($dev4_state == 0)
-                                <input type="checkbox" class="switch-input">
+                            
+                            @if($dev4_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input" checked>
                                 @endif
-                                
+
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
@@ -528,12 +548,12 @@
                         <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
                             <label class="switch controlswitch">
 
-                                @if($dev4_state == 0)
-                                <input type="checkbox" class="switch-input">
+                            @if($dev4_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input" checked>
                                 @endif
-                                
+
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>

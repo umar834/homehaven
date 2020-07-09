@@ -20,6 +20,22 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+    public function abc(Request $request)
+    {
+        
+        $device = $request['device'];
+        $room_index = $request['room_index'];
+        $state = $request['state'];
+        $bit = 2 ** (8-$device);
+        $room = DB::table('rooms')->where([['user_id', '=', Auth::user()->id],['room_index','=',$room_index]])->first();
+        $old_state = $room->state;
+        $new_state = 0;
+        if($state == 'true') $new_state = $old_state | $bit;
+        else $new_state = $old_state & (255 - $bit);
+        DB::update('update rooms set state = ? where id = ?', [$new_state, $room->id]);
+        
+        return $new_state;
+    }
 
     /**
      * Show the application dashboard.

@@ -80,6 +80,7 @@ Route::post('register', [
   'uses' => 'Auth\RegisterController@register'
 ]);
 Route::get('/changePassword','HomeController@showChangePasswordForm');
+Route::post('/abc','HomeController@abc');
 Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
 
 Route::get('/changeEmail','HomeController@showChangeEmailForm');
