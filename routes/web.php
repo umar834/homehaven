@@ -80,7 +80,6 @@ Route::post('register', [
   'uses' => 'Auth\RegisterController@register'
 ]);
 Route::get('/changePassword','HomeController@showChangePasswordForm');
-Route::post('/abc','HomeController@abc');
 Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
 
 Route::get('/changeEmail','HomeController@showChangeEmailForm');
@@ -102,3 +101,6 @@ Route::post('/addnewroom', 'HomeController@addnewroom');
 Route::post('/deleteroom', 'HomeController@deleteroom');
 
 Route::get('/test', 'HomeController@index');
+
+Route::post('/update_state','HomeController@update_state');
+Route::post('/update_dim_state','HomeController@update_dim_state');

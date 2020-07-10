@@ -20,7 +20,7 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
-    public function abc(Request $request)
+    public function update_state(Request $request)
     {
         
         $device = $request['device'];
@@ -32,6 +32,18 @@ class HomeController extends Controller
         $new_state = 0;
         if($state == 'true') $new_state = $old_state | $bit;
         else $new_state = $old_state & (255 - $bit);
+        DB::update('update rooms set state = ? where id = ?', [$new_state, $room->id]);
+        
+        return $new_state;
+    }
+    
+    public function update_dim_state(Request $request)
+    {
+        $room_index = $request['room_index'];
+        $state = $request['state'];
+        $room = DB::table('rooms')->where([['user_id', '=', Auth::user()->id],['room_index','=',$room_index]])->first();
+        $old_state = $room->state;
+        $new_state = (248 & $old_state) + $state;
         DB::update('update rooms set state = ? where id = ?', [$new_state, $room->id]);
         
         return $new_state;
