@@ -575,19 +575,52 @@ function update_dim_state(room_index, element){
                     @endif
 
                     <!--DEVICE FIVE-->
-                    @if ($room->dim_type > 0)
+                    @if ($room->dim_type == 1)
                     
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Dimable<span class="controlspeed">
-                    Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                            <label class="switch controlswitch">
+     
+                            @if($dev5_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input">
+                                @else
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input" checked>
+                                @endif
+
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+                    @elseif($room->dim_type == 2)
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                       
+                            <label class="switch controlswitch">
+                            
+                            @if($dev5_state == 0)
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input">
+                                @else
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input" checked>
+                                @endif
+
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </span></h4>
+                    </div>
+
+                    @elseif($room->dim_type == 3)
+                    <div class="controldiv">
+                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
                             <label class="switch controlswitch">
 
                             @if($dev5_state == 0)
-                                <input onclick = 'update_state("{{$room->room_index}}",5,this)' type="checkbox" class="switch-input">
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input onclick = 'update_state("{{$room->room_index}}",5,this)' type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input" checked>
                                 @endif
-                                
+
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
@@ -1052,16 +1085,16 @@ function update_dim_state(room_index, element){
                         @endif
 
                         <!-- DEVICE FIVE -->
-                        @if ($room->dim_type > 0)
+                        @if ($room->dim_type == 1)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Dimable</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
 
                                     @if($dev5_state == 0)
-                                    <input type="checkbox" name="start5{{$room->id}}" class="switch-input">
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="start5{{$room->id}}" class="switch-input" checked>
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input" checked>
                                     @endif
 
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
@@ -1072,9 +1105,72 @@ function update_dim_state(room_index, element){
                                 <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
                                     
                                     @if($dev5_endstate == 0)
-                                    <input type="checkbox" name="end5{{$room->id}}" class="switch-input">
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input">
                                     @else
-                                    <input type="checkbox" name="end5{{$room->id}}" class="switch-input" checked>
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+                        
+                        @elseif($room->dim_type == 2)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
+                           </h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+                              
+                                    @if($dev5_state == 0)
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                    
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                            
+                                    @if($dev5_endstate == 0)
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                   
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                        </div>
+    
+                        @elseif($room->dim_type == 3)
+                        <div class="controldiv">
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
+                            <h6>Start State: <span>
+                                <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+                                
+                                    @if($dev5_state == 0)
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="start4{{$room->id}}" class="switch-input" checked>
+                                    @endif
+                                   
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </span></h6>
+                            <h6>End State: <span>
+                                <label style="margin-left:28px; margin-top: 0px; float:none;" class="switch controlswitch">
+                                  
+                                    @if($dev5_endstate == 0)
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input">
+                                    @else
+                                    <input type="checkbox" name="end4{{$room->id}}" class="switch-input" checked>
                                     @endif
                                     
                                     <span class="switch-label" data-on="On" data-off="Off"></span>
