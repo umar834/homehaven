@@ -575,7 +575,7 @@ function update_dim_state(room_index, element){
                     <!--DEVICE FIVE-->
                     @if ($room->dim_type == 1)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Dimable<span class="controlspeed">
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span class="controlspeed">
                     Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
                             <label class="switch controlswitch">
 
@@ -592,7 +592,7 @@ function update_dim_state(room_index, element){
                     </div>
                     @elseif($room->dim_type == 2)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>Dimable<span class="controlspeed">
+                    <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>Fan<span class="controlspeed">
                     Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
                             <label class="switch controlswitch">
 
@@ -610,7 +610,7 @@ function update_dim_state(room_index, element){
 
                     @elseif($room->dim_type == 3)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Dimable<span class="controlspeed">
+                    <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Plug<span class="controlspeed">
                     Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
                             <label class="switch controlswitch">
 
