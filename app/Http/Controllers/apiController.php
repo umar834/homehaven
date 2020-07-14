@@ -33,14 +33,25 @@ class apiController extends Controller
     public function setroomstate(Request $request){
         if(self::verifytoken($request) == "ok")
         {
-            if(self::setroom($request) == "ok"){
+            if(self::set_room_state($request) == "ok"){
                 return "ok";
             }
         }
         return "invalid";
     }
 
-    private function getroom(Request $request){
+    public function getroomstate(Request $request){
+        if(self::verifytoken($request) == "ok")
+        {
+            $state =self::get_room_state($request);
+            if($state > -1 && $state < 256){
+                return $state;
+            }
+        }
+        return "invalid";
+    }
+
+    private function get_room_state(Request $request){
         $email = $request->get('email');
         $room_index = $request->get('room_index');
 
@@ -48,9 +59,11 @@ class apiController extends Controller
         $id = $user->id;
 
         $room = DB::table('rooms')->where([['user_id', '=', $id],['room_index', '=', $room_index]])->first();
-        return $room;
+        if($room != null)
+            return  sprintf("%03d", $room->state);
+        else return -10;
     }
-    private function setroom(Request $request){
+    private function set_room_state(Request $request){
         $email = $request->get('email');
         $room_index = $request->get('room_index');
         $state = $request->get('state');
