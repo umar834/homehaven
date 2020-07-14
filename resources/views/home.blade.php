@@ -574,21 +574,17 @@ function update_dim_state(room_index, element){
 
                     <!--DEVICE FIVE-->
                     @if ($room->dim_type == 1)
-                    
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Dimable<span class="controlspeed">
+                    Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
                             <label class="switch controlswitch">
-     
+
                             @if($dev5_state == 0)
-                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input">
+                                <input onclick = 'update_state("{{$room->room_index}}",5,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",5,this)' type="checkbox" class="switch-input" checked>
                                 @endif
-
-                                <span class="controlspeed">
-                                    Speed: <input type ="range" value="{{$dev5_state}}" min="0" max="10"/>
-                                </span>
-
+                                
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
@@ -596,43 +592,38 @@ function update_dim_state(room_index, element){
                     </div>
                     @elseif($room->dim_type == 2)
                     <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
-                       
+                    <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>Dimable<span class="controlspeed">
+                    Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
                             <label class="switch controlswitch">
-                            
+
                             @if($dev5_state == 0)
-                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input">
+                                <input onclick = 'update_state("{{$room->room_index}}",5,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",5,this)' type="checkbox" class="switch-input" checked>
                                 @endif
+                                
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
                         </span></h4>
-                        <span class="controlspeed">
-                            Speed: <input type ="range" value="{{$dev5_state}}" min="0" max="10"/>
-                        </span>
                     </div>
 
                     @elseif($room->dim_type == 3)
                     <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                    <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Dimable<span class="controlspeed">
+                    Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
                             <label class="switch controlswitch">
 
                             @if($dev5_state == 0)
-                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input">
+                                <input onclick = 'update_state("{{$room->room_index}}",5,this)' type="checkbox" class="switch-input">
                                 @else
-                                <input onclick = 'update_state("{{$room->room_index}}",4,this)' type="checkbox" class="switch-input" checked>
+                                <input onclick = 'update_state("{{$room->room_index}}",5,this)' type="checkbox" class="switch-input" checked>
                                 @endif
-
+                                
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
                         </span></h4>
-
-                        <span class="controlspeed">
-                            Speed: <input type ="range" value="{{$dev5_state}}" min="0" max="10"/>
-                        </span>
                     </div>
                     
                     @endif
