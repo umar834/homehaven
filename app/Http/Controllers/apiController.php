@@ -28,18 +28,86 @@ class apiController extends Controller
         }
         //return preg_replace("(\\{|\\}|\"room_index\"\:|\[|\])",'',$rooms);
 
-
-
     }
+
+    public function setroomstate(Request $request){
+        if(self::verifytoken($request) == "ok")
+        {
+            if(self::setroom($request) == "ok"){
+                return "ok";
+            }
+        }
+        return "invalid";
+    }
+
+    private function getroom(Request $request){
+        $email = $request->get('email');
+        $room_index = $request->get('room_index');
+
+        $user = DB::table('users')->where('email', '=', $email)->first();
+        $id = $user->id;
+
+        $room = DB::table('rooms')->where([['user_id', '=', $id],['room_index', '=', $room_index]])->first();
+        return $room;
+    }
+    private function setroom(Request $request){
+        $email = $request->get('email');
+        $room_index = $request->get('room_index');
+        $state = $request->get('state');
+
+        $user = DB::table('users')->where('email', '=', $email)->first();
+        $id = $user->id;
+
+        //dump($id);
+        //dump($state);
+        //dump($room_index);
+        //dump($email);
+        DB::update('update rooms set state = ? where user_id = ? AND room_index = ?',
+        [$state, $id, $room_index]);
+        return "ok";
+    }
+
+    private function token(Request $request){
+        $email = $request->get('email');
+        $user = DB::table('users')->where('email', '=', $email)->first();
+        if ($user == null) {
+            return "invalid";
+        }
+        if (Hash::check($request->get('password'), $user->password)) {
+            return $user->token;
+        }
+        return "invalid";
+    }
+
     public function gettoken(Request $request)
+    {
+        $token = self::token($request);
+        if($token != "invalid")
+        return 'ok' . $token;
+        else
+        return "invalid";
+    }
+
+    public function applogin(Request $request)
+    {
+        $token = self::token($request);
+        $room_info = "inv";
+        if($token != "invalid"){
+            $room_info = self::roominfo($request, $token);
+            if($room_info != "invalid")
+                return "ok" . $token . $room_info;
+        }
+        return $token . $room_info;
+    }
+    public function verifytoken(Request $request)
     {
         $email = $request->get('email');
         $user = DB::table('users')->where('email', '=', $email)->first();
         if ($user == null) {
-            return "invalid ";
+            return "invalid";
         }
-        if (Hash::check($request->get('password'), $user->password)) {
-            return 'o' . $user->token . 'k';
+        if ($request->get('token') == $user->token) {
+            return 'ok';
         }
         return "invalid";
     }
@@ -68,30 +136,39 @@ class apiController extends Controller
             }
             //dump($rooms_str);
             //dd($rooms);
-            return 'o' . $rooms_str . 'k';
+            return 'ok' . $rooms_str;
         }
         return "invalid";
     }
 
-    public function getrinfo(Request $request)
+    public function getroominfo(Request $request)
+    {
+        $room_info = self::roominfo($request, $request->token);
+        if($room_info != "invalid")
+        return 'ok' . $room_info;
+        else
+        return $room_info;
+    }
+    private function roominfo(Request $request, String $token)
     {
         $email = $request->get('email');
         $user = DB::table('users')->where('email', '=', $email)->first();
         if ($user == null) {
             return "invalid ";
         }
-        if ($request->get('token') === $user->token) {
+        if ($token === $user->token) {
             $uid = $user->id;
             $rooms = DB::table('rooms')->where('user_id', '=', $uid)->get();
             $rooms_count = count($rooms);
             $rooms_str = "";
             foreach ($rooms as $key => $value) {
-                $rooms_str .= (':' . $value->dev1_type . $value->dev2_type .
-                    $value->dev3_type . $value->dev4_type . $value->dim_type . sprintf(":%03d", $value->state));
+                $rooms_str .= (':' . $value->room_index . $value->dev1_type . $value->dev2_type .
+                    $value->dev3_type . $value->dev4_type . $value->dim_type . sprintf("%03d", $value->state).
+                    $value->name);
             }
             //dump($rooms_str);
             //dd($rooms);
-            return 'o' . $rooms_str . 'k';
+            return $rooms_count . $rooms_str ;
         }
         return "invalid";
     }

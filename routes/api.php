@@ -21,7 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post("temprature","apiController@temprature");
 
 Route::post("gettoken","apiController@gettoken");
-Route::post("getrinfo","apiController@getrinfo");
+Route::post("applogin","apiController@applogin");
+Route::post("verifytoken","apiController@verifytoken");
+Route::post("getroominfo","apiController@getroominfo");
+Route::post("setroomstate","apiController@setroomstate");
 Route::post("getddata","apiController@getddata");
 Route::post("logpower","apiController@logpower");
 Route::get("HC7sVLHeMMRqFnhZef2hW49w7TJW9sVj","apiController@updatetoken");

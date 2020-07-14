@@ -28,7 +28,6 @@ function update_state(room_index, device, element){
                url:'/update_state',
                data:{room_index,device,state},
                success:function(data) {
-                alert(data);
                }
             });
 }
@@ -41,7 +40,6 @@ function update_dim_state(room_index, element){
                url:'/update_dim_state',
                data:{room_index,state},
                success:function(data) {
-                alert(data);
                }
             });
 }
