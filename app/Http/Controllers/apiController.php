@@ -324,22 +324,22 @@ class apiController extends Controller
         if ($last_log != null) {
             $last_total = $last_log->log_0 + $last_log->log_1 + $last_log->log_2 +
                 $last_log->log_3 + $last_log->log_4 + $last_log->log_5;
-            $last_log_count += $last_log->log_0 != null ? 1 : 0;
-            $last_log_count += $last_log->log_1 != null ? 1 : 0;
-            $last_log_count += $last_log->log_2 != null ? 1 : 0;
-            $last_log_count += $last_log->log_3 != null ? 1 : 0;
-            $last_log_count += $last_log->log_4 != null ? 1 : 0;
-            $last_log_count += $last_log->log_5 != null ? 1 : 0;
+            $last_log_count += $last_log->log_0 != 0 ? 1 : 0;
+            $last_log_count += $last_log->log_1 != 0 ? 1 : 0;
+            $last_log_count += $last_log->log_2 != 0 ? 1 : 0;
+            $last_log_count += $last_log->log_3 != 0 ? 1 : 0;
+            $last_log_count += $last_log->log_4 != 0 ? 1 : 0;
+            $last_log_count += $last_log->log_5 != 0 ? 1 : 0;
         }
         if ($scnd_last_log != null) {
             $scnd_total = $scnd_last_log->log_0 + $scnd_last_log->log_1 + $scnd_last_log->log_2 +
                 $scnd_last_log->log_3 + $scnd_last_log->log_4 + $scnd_last_log->log_5;
-            $scnd_last_log_count += $scnd_last_log->log_0 != null ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_1 != null ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_2 != null ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_3 != null ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_4 != null ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_5 != null ? 1 : 0;
+            $scnd_last_log_count += $scnd_last_log->log_0 != 0 ? 1 : 0;
+            $scnd_last_log_count += $scnd_last_log->log_1 != 0 ? 1 : 0;
+            $scnd_last_log_count += $scnd_last_log->log_2 != 0 ? 1 : 0;
+            $scnd_last_log_count += $scnd_last_log->log_3 != 0 ? 1 : 0;
+            $scnd_last_log_count += $scnd_last_log->log_4 != 0 ? 1 : 0;
+            $scnd_last_log_count += $scnd_last_log->log_5 != 0 ? 1 : 0;
         }
         dump($last_log_count);
         dump($scnd_last_log_count);
@@ -351,4 +351,76 @@ class apiController extends Controller
         //dd($rooms);
         //return 'o'.$rooms_str.'k';
     }
+    
+    public function billprediction(Request $request){
+        if(self::verifytoken($request) == "ok")
+        {
+            $email = $request->get('email');
+
+            $user = DB::table('users')->where('email', '=', $email)->first();
+            $id = $user->id;
+
+            
+            $date =  date("Y-m-d", strtotime(now()->startOfMonth()));
+            $power_logs = DB::table('power_log')->where([['user_id', '=', $id],['date', '>=', $date]])->get();
+            dump($date);
+
+            $total_power = 0;
+            $total_days = 0;
+            
+            foreach ($power_logs as $index => $power_log) {
+                $total_power += $power_log->log_0 * 4;
+                $total_power += $power_log->log_1 * 4;
+                $total_power += $power_log->log_2 * 4;
+                $total_power += $power_log->log_3 * 4;
+                $total_power += $power_log->log_4 * 4;
+                $total_power += $power_log->log_5 * 4;
+                $total_days += 1;
+            }
+
+            $Whs = ($total_power / $total_days) * 30; // Watt hours
+            $kWhs = $Whs /1000;
+            $bill = 75;              // Minimum bill
+            if($kWhs <= 50){
+                $bill += 2 * $kWhs;
+            }
+            else{
+                $units = $kWhs;
+                if($units < 101){
+                    $bill += 5.79 * $units;
+                }
+                elseif($units < 201){
+                    $bill += 5.79 * 100;
+                    $units -= 100;
+                    $bill += 8.11 * $units;
+                    
+                }
+                elseif($units < 301){
+                    $bill += 8.11 * 200;
+                    $units -= 200;
+                    $bill += 10.2 * $units;
+                    
+                }
+                elseif($units < 701){
+                    $hunds = (int)$units /100;
+                    $bill += 10.2 * 100 * $hunds;
+                    $units -= $hunds * 100;
+                    $bill += 17.6 * $units;
+                }
+                else{
+                    $bill += 20.7 * $units;
+                }
+            }
+            // Add 10% tax
+            $bill *= 1.1;
+            dump($total_power);
+            dump($total_days);
+            dump($bill);
+
+            return "ok";
+        }
+        return "invalid";
+
+    }
+
 }
