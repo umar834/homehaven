@@ -32,7 +32,7 @@ class HomeController extends Controller
         $new_state = 0;
         if($state == 'true') $new_state = $old_state | $bit;
         else $new_state = $old_state & (255 - $bit);
-        DB::update('update rooms set state = ? where id = ?', [$new_state, $room->id]);
+        DB::update('update rooms set state = ?, priority = true where id = ?', [$new_state, $room->id]);
         
         return $new_state;
     }
@@ -44,7 +44,7 @@ class HomeController extends Controller
         $room = DB::table('rooms')->where([['user_id', '=', Auth::user()->id],['room_index','=',$room_index]])->first();
         $old_state = $room->state;
         $new_state = (248 & $old_state) + $state;
-        DB::update('update rooms set state = ? where id = ?', [$new_state, $room->id]);
+        DB::update('update rooms set state = ?, priority = true where id = ?', [$new_state, $room->id]);
         
         return $new_state;
     }

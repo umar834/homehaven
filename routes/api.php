@@ -26,7 +26,8 @@ Route::post("verifytoken","apiController@verifytoken");
 Route::post("getroominfo","apiController@getroominfo");
 Route::post("setroomstate","apiController@setroomstate");
 Route::post("getroomstate","apiController@getroomstate");
-Route::post("getddata","apiController@getddata");
+
+Route::post("edgesync","apiController@edgesync");
 Route::post("logpower","apiController@logpower");
 Route::get("HC7sVLHeMMRqFnhZef2hW49w7TJW9sVj","apiController@updatetoken");
 Route::get("test","apiController@test");
