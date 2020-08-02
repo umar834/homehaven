@@ -132,6 +132,7 @@ class HomeController extends Controller
             'rooms' => $rooms,
             'bill' => $bill,
             'bill_target' => $bill_target,
+            'lastmonthbill' => $lastmonthbill,
             'nightenabled' => $nightenabled
         );
        
