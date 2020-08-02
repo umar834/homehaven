@@ -231,8 +231,6 @@ class HomeController extends Controller
     {
         $rooms = DB::table('rooms')->where('user_id', '=', Auth::user()->id)->get();
 
-        $starttime = $request->get('starttime');
-        $stoptime = $request->get('stoptime');
 
         $user_id = Auth::user()->id;
 
@@ -244,7 +242,6 @@ class HomeController extends Controller
             if($room->dev1_type != 0)
             {
                 $dev1_start = $request->get('start1'.$room->id);
-                $dev1_stop = $request->get('end1'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
@@ -254,20 +251,11 @@ class HomeController extends Controller
                     $night_state += 128;
                 }
 
-                if($dev1_stop == null)
-                {
-                    $morning_state += 0;
-                }
-                else
-                {
-                    $morning_state += 128;
-                }
             }
 
             if($room->dev2_type != 0)
             {
                 $dev1_start = $request->get('start2'.$room->id);
-                $dev1_stop = $request->get('end2'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
@@ -277,20 +265,12 @@ class HomeController extends Controller
                     $night_state += 64;
                 }
 
-                if($dev1_stop == null)
-                {
-                    $morning_state += 0;
-                }
-                else
-                {
-                    $morning_state += 64;
-                }
+                
             }
 
             if($room->dev3_type != 0)
             {
                 $dev1_start = $request->get('start3'.$room->id);
-                $dev1_stop = $request->get('end3'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
@@ -300,20 +280,12 @@ class HomeController extends Controller
                     $night_state += 32;
                 }
 
-                if($dev1_stop == null)
-                {
-                    $morning_state += 0;
-                }
-                else
-                {
-                    $morning_state += 32;
-                }
+                
             }
 
             if($room->dev4_type != 0)
             {
                 $dev1_start = $request->get('start4'.$room->id);
-                $dev1_stop = $request->get('end4'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
@@ -323,46 +295,27 @@ class HomeController extends Controller
                     $night_state += 16;
                 }
 
-                if($dev1_stop == null)
-                {
-                    $morning_state += 0;
-                }
-                else
-                {
-                    $morning_state += 16;
-                }
             }
 
             if($room->dim_type != 0)
             {
                 $dev1_start = $request->get('start5'.$room->id);
-                $dev1_stop = $request->get('end5'.$room->id);
+                $dev1dim_start = $request->get('start5d'.$room->id);
                 if($dev1_start == null)
                 {
                     $night_state += 0;
                 }
                 else
                 {
-                    $night_state += 7;
+                    $night_state += 8;
                 }
+                $night_state += $dev1dim_start;
 
-                if($dev1_stop == null)
-                {
-                    $morning_state += 0;
-                }
-                else
-                {
-                    $morning_state += 7;
-                }
+                
             }
 
-            DB::update('update rooms set night_state = ?, morning_state = ? where id = ?',[$night_state,$morning_state, $room->id]);
+            DB::update('update rooms set night_state = ? where id = ?',[$night_state, $room->id]);
         }
-
-            $startstate =$request->get('start'.$number);
-            $stopstate = $request->get('end'.$number);
-
-            DB::update('update users set Night_Start_Time = ?, Night_End_Time = ? where id = ?',[$starttime,$stoptime, $user_id]);
 
         return redirect()->back()->with("success","Nighmode changes saved to the database !");
     }
