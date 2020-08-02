@@ -248,8 +248,8 @@ class apiController extends Controller
                     break;
             }
 
-            dump($slot_usage);
-            dump($slot_count);
+            //dump($slot_usage);
+            //dump($slot_count);
 
             foreach ($rooms as $key => $value) {
                 //dump($value->changed_at );
@@ -378,7 +378,8 @@ class apiController extends Controller
                 $total_days += 1;
             }
 
-            $Whs = ($total_power / $total_days) * 30; // Watt hours
+            $Whs = 0;
+            if($total_days)($total_power / $total_days) * 30; // Watt hours
             $kWhs = $Whs /1000;
             $bill = 75;              // Minimum bill
             if($kWhs <= 50){

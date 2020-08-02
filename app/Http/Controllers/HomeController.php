@@ -58,37 +58,81 @@ class HomeController extends Controller
     public function index()
     {
         $rooms = DB::table('rooms')->where('user_id', '=', Auth::user()->id)->get();
+        $id = Auth::user()->id;
 
-        $bill = DB::table('bill')->where('user_id', '=', Auth::user()->id)->orderby('date', 'desc')->first();
-        $lastmonthbill = DB::table('bill')->where('user_id', '=', Auth::user()->id)->orderby('date', 'desc')
-                            ->skip(1)->first();
+            
+        $date =  date("Y-m-d", strtotime(now()->startOfMonth()));
+        $power_logs = DB::table('power_log')->where([['user_id', '=', $id],['date', '>=', $date]])->get();
+        //dump($date);
 
-        $power = Power_log::where([['date', '=', '2020-04-28'], ['user_id','=', Auth::user()->id]])->get();
-
-        if (!$power->isEmpty())
-        $previus_id = $power->id-1;
-
-        if ($power->isEmpty())
-        {
-            $power = null;
+        $total_power = 0;
+        $total_days = 0;
+        
+        foreach ($power_logs as $index => $power_log) {
+            $total_power += $power_log->log_0 * 4;
+            $total_power += $power_log->log_1 * 4;
+            $total_power += $power_log->log_2 * 4;
+            $total_power += $power_log->log_3 * 4;
+            $total_power += $power_log->log_4 * 4;
+            $total_power += $power_log->log_5 * 4;
+            $total_days += 1;
         }
-        $yest_power = Power_log::where([['date', '2020-04-27'], ['user_id','=', Auth::user()->id]])->get();
 
-        if ($yest_power->isEmpty())
-        {
-            $yest_power = null;
+        $Whs = 0;
+        if($total_days)($total_power / $total_days) * 30; // Watt hours
+        $kWhs = $Whs /1000;
+        $bill = 75;              // Minimum bill
+        if($kWhs <= 50){
+            $bill += 2 * $kWhs;
         }
+        else{
+            $units = $kWhs;
+            if($units < 101){
+                $bill += 5.79 * $units;
+            }
+            elseif($units < 201){
+                $bill += 5.79 * 100;
+                $units -= 100;
+                $bill += 8.11 * $units;
+                
+            }
+            elseif($units < 301){
+                $bill += 8.11 * 200;
+                $units -= 200;
+                $bill += 10.2 * $units;
+                
+            }
+            elseif($units < 701){
+                $hunds = (int)$units /100;
+                $bill += 10.2 * 100 * $hunds;
+                $units -= $hunds * 100;
+                $bill += 17.6 * $units;
+            }
+            else{
+                $bill += 20.7 * $units;
+            }
+        }
+        // Add 10% tax
+        $bill *= 1.1;
 
-        $nightstarttime = Auth::user()->Night_Start_Time;
-        $nightendtime = Auth::user()->Night_End_Time;
+        $lastmonthbill = DB::table('bill')->where('user_id', '=', Auth::user()->id)->orderby('date', 'desc')->first();
+
+        $power = Power_log::where( 'user_id','=', Auth::user()->id)->orderby('date', 'desc')->first();
+
+        
+        $yest_power = Power_log::where( 'user_id','=', Auth::user()->id)->orderby('date', 'desc')->skip(1)->first();
+
+
+        $nightenabled = Auth::user()->Night_Enabled;
+        $bill_target = Auth::user()->bill_target;
+
         $data = array(
             'power_data' => $power,
             'yest_power' => $yest_power,
             'rooms' => $rooms,
             'bill' => $bill,
-            'lastmonthbill' => $lastmonthbill,
-            'nightstarttime' => $nightstarttime,
-            'nightendtime' => $nightendtime
+            'bill_target' => $bill_target,
+            'nightenabled' => $nightenabled
         );
        
         if (Auth::user() && Auth::user()->role != 'admin')
