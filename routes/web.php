@@ -104,3 +104,5 @@ Route::get('/test', 'HomeController@index');
 
 Route::post('/update_state','HomeController@update_state');
 Route::post('/update_dim_state','HomeController@update_dim_state');
+
+Route::post('/setnightmode','HomeController@nightmode');

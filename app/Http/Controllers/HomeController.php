@@ -226,6 +226,19 @@ class HomeController extends Controller
     }
 
     /********************SAVE NIGHT MODE DATA TO TABLE *********************/
+    public function nightmode(Request $request)
+    {
+        $id = Auth::user()->id;
+        if($request->state == 'true'){
+            DB::update('update users set Night_Enabled = ? where id = ?',[1, $id]);
+            DB::update('update rooms set morning_state = state, state = night_state where user_id = ?',[$id]);
+        } 
+        else{
+            DB::update('update users set Night_Enabled = ? where id = ?',[0, $id]);
+            DB::update('update rooms set state = morning_state where user_id = ?',[$id]);
+        }
+        return "Done".$request->state;
+    }
 
     public function changeNightmode(Request $request)
     {

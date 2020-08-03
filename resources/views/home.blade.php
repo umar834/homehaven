@@ -20,6 +20,17 @@
     $('.hidecroosss').fadeOut('slow');
 }, 5000); 
 
+function night_enable(element){
+    //alert(room_index);
+    state = $(element).is(':checked');
+    $.ajax({
+               type:'POST',
+               url:'/setnightmode',
+               data:{state},
+               success:function(data) {
+               }
+            });
+}
 function update_state(room_index, device, element){
     //alert(room_index);
     state = $(element).is(':checked');
@@ -648,7 +659,20 @@ function update_dim_state(room_index, element){
             <div style="margin-left: 10px;" class="row">
 
             <div class="md-form md-outline col-md-3 ">
-                <label >Night mod toggle</label>
+                <h6>Night mode :<span>
+                    <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
+                        
+                    @if($nightenabled == 0)
+                    <input type="checkbox" onclick = 'night_enable(this)' class="switch-input">
+                    @else
+                    <input type="checkbox" onclick = 'night_enable(this)' class="switch-input" checked>
+                    @endif
+
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                    </span>
+                </h6>
              </div>
 
             </div>
