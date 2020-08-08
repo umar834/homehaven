@@ -265,8 +265,8 @@ class apiController extends Controller
                     $rooms_str .= ":500"; // Just rusbbish/invalid room state
                     if( $roomArr[$key] != null){
                                         
-                        DB::update('update rooms set state = ? where user_id = ? AND room_index = ?',
-                        [$roomArr[$key], $uid, $key]);
+                        DB::update('update rooms set priority = ?, state = ? where user_id = ? AND room_index = ?',
+                        [false, $roomArr[$key], $uid, $key]);
                     }
                 }
             }
@@ -550,11 +550,11 @@ class apiController extends Controller
                 
                 $new_state = $dim_value;
                 
-                if($dev1 > 0 || ($temprature > 25 && $dev1_t == 2)) $new_state += 128;
-                if($dev2 > 0 || ($temprature > 25 && $dev2_t == 2)) $new_state += 64;
-                if($dev3 > 0 || ($temprature > 25 && $dev3_t == 2)) $new_state += 32;
-                if($dev4 > 0 || ($temprature > 25 && $dev4_t == 2)) $new_state += 16;
-                if($dev5 > 0 || ($temprature > 25 && $dev5_t == 2)) $new_state += 8;
+                if(($dev1 > 0 && $dev1_t != 2) || ($temprature > 25 && $dev1_t == 2)) $new_state += 128;
+                if(($dev2 > 0 && $dev2_t != 2) || ($temprature > 25 && $dev2_t == 2)) $new_state += 64;
+                if(($dev3 > 0 && $dev3_t != 2) || ($temprature > 25 && $dev3_t == 2)) $new_state += 32;
+                if(($dev4 > 0 && $dev4_t != 2) || ($temprature > 25 && $dev4_t == 2)) $new_state += 16;
+                if(($dev5 > 0 && $dev5_t != 2) || ($temprature > 25 && $dev5_t == 2)) $new_state += 8;
                 
                 DB::update('update rooms set state = ?, priority = true where id = ?',
                     [$new_state, $room->id]);
@@ -592,11 +592,11 @@ class apiController extends Controller
 
                 $new_state = $dim_value;
                 
-                if($dev1 > 0 || ($temprature > 25 && $dev1_t == 2)) $new_state += 128;
-                if($dev2 > 0 || ($temprature > 25 && $dev2_t == 2)) $new_state += 64;
-                if($dev3 > 0 || ($temprature > 25 && $dev3_t == 2)) $new_state += 32;
-                if($dev4 > 0 || ($temprature > 25 && $dev4_t == 2)) $new_state += 16;
-                if($dev5 > 0 || ($temprature > 25 && $dev5_t == 2)) $new_state += 8;
+                if(($dev1 > 0 && $dev1_t != 2) || ($temprature > 25 && $dev1_t == 2)) $new_state += 128;
+                if(($dev2 > 0 && $dev2_t != 2) || ($temprature > 25 && $dev2_t == 2)) $new_state += 64;
+                if(($dev3 > 0 && $dev3_t != 2) || ($temprature > 25 && $dev3_t == 2)) $new_state += 32;
+                if(($dev4 > 0 && $dev4_t != 2) || ($temprature > 25 && $dev4_t == 2)) $new_state += 16;
+                if(($dev5 > 0 && $dev5_t != 2) || ($temprature > 25 && $dev5_t == 2)) $new_state += 8;
 
                 DB::update('update rooms set state = ?, priority = true where id = ?',
                     [$new_state, $room->id]);
