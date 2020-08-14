@@ -85,7 +85,7 @@ Route::post('/changePassword','HomeController@changePassword')->name('changePass
 Route::get('/changeEmail','HomeController@showChangeEmailForm');
 Route::post('/changeEmail','HomeController@changeEmail')->name('changeEmail');
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomePage@index');
 Route::get('/home', 'HomeController@index');
 Route::get('/welcome', 'HomeController@welcome');
 Route::post('/savenightmode', 'HomeController@changeNightmode')->name('changeNightmode');
@@ -106,3 +106,5 @@ Route::post('/update_state','HomeController@update_state');
 Route::post('/update_dim_state','HomeController@update_dim_state');
 
 Route::post('/setnightmode','HomeController@nightmode');
+
+Route::post('/contactus','HomePage@contactus');
