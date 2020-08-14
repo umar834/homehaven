@@ -7,7 +7,7 @@
         <meta name="author" content="Muhammad Umar Gulzar & Mehmood Ul Hassan" />
         <title>HomeHaven - Secure Home, Secure Devices</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="{{asset('images/img/favicon.ico')}}" />
+        <link rel="icon" type="image/x-icon" href="{{asset('images/img/favicon.png')}}" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
