@@ -106,5 +106,6 @@ Route::post('/update_state','HomeController@update_state');
 Route::post('/update_dim_state','HomeController@update_dim_state');
 
 Route::post('/setnightmode','HomeController@nightmode');
+Route::post('/setautomode','HomeController@automode');
 
 Route::post('/contactus','HomePage@contactus');

@@ -31,6 +31,17 @@ function night_enable(element){
                }
             });
 }
+function auto_enable(element){
+    //alert(room_index);
+    state = $(element).is(':checked');
+    $.ajax({
+               type:'POST',
+               url:'/setautomode',
+               data:{state},
+               success:function(data) {
+               }
+            });
+}
 function update_state(room_index, device, element){
     //alert(room_index);
     state = $(element).is(':checked');
@@ -271,68 +282,60 @@ function update_dim_state(room_index, element){
         <div class="row roomsmaindiv">
             <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                 <div class="frequentlyusedcontrolles">
-                    <h2>Frequently Used</h2>
+                    <h2>Quick Access</h2>
                     <div class="row">
-                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 freqcontrol">
-                            <i class="fas fa-lightbulb"></i>
-                            <label class="switch freqswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                            <h4>Kitchen Light</h4>
-                        </div>
 
-                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 freqcontrol">
-                            <i class="fas fa-lightbulb"></i>
-                            <label class="switch freqswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                            <h4>Living Room Light-1</h4>
-                        </div>
+                        <div class=" col-xs-10 col-sm-5 col-md-5 col-lg-5 ">
+                            <h4>Auto mode :<span>
+                                <label style="margin-left:20px; margin-top: 5px; float: none;" class="switch controlswitch">
+                                    
+                                @if($autoenabled == 0)
+                                <input type="checkbox" onclick = 'auto_enable(this)' class="switch-input">
+                                @else
+                                <input type="checkbox" onclick = 'auto_enable(this)' class="switch-input" checked>
+                                @endif
 
-                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 freqcontrol">
-                            <i class="fas fa-fan"></i>
-                            <label class="switch freqswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                            <div class="slider">
-                                <label for="">Speed:
-                                <input type ="range" min="0" max="10" onchange="rangevalue.value=value"/>
-                                <output id="rangevalue"></output>
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
                                 </label>
-                            </div>
-                            <h4>Living Room Fan-1</h4>
+                                </span>
+                            </h4>
+                            <h6 align="justify"> 
+                             You can activate this mode and then the devices will be controlled
+                              by the system and you won't have to do anything. 
+                              System will analyze the suroundings and previous data to manage all devices.
+                             This is one of the great features of HomeHaven. System keeps a summary of devices' status 
+                             during day and night. And does not track whole activity of Users.
+                            </h6>
+                    
                         </div>
 
-                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 freqcontrol">
-                            <i class="fas fa-video"></i>
-                            <label class="switch freqswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                            <h4>Camera-1</h4>
+                        <div class=" col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
                         </div>
+                        <div class=" col-xs-10 col-sm-5 col-md-5 col-lg-5 ">
+                            <h4>Night mode :<span>
+                                <label style="margin-left:20px; margin-top: 5px; float: none;" class="switch controlswitch">
+                                    
+                                @if($nightenabled == 0)
+                                <input type="checkbox" onclick = 'night_enable(this)' class="switch-input">
+                                @else
+                                <input type="checkbox" onclick = 'night_enable(this)' class="switch-input" checked>
+                                @endif
 
-                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 freqcontrol">
-                            <i class="fas fa-fan"></i>
-                            <label class="switch freqswitch">
-                                <input type="checkbox" class="switch-input" checked>
-                                <span class="switch-label" data-on="On" data-off="Off"></span>
-                                <span class="switch-handle"></span>
-                            </label>
-                            <div class="slider">
-                                <label for="">Speed:
-                                <input type ="range" min="0" max="10" onchange="rangevalue1.value=value"/>
-                                <output id="rangevalue1"></output>
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
                                 </label>
-                            </div>
-                            <h4>Bedroom-1 Fan</h4>
+                                </span>
+                            </h4>
+                            <h6 align="justify">
+                            You can set your preferences that which devices you want to turn on/off when
+                             night starts and when you activate this mode system will automatically set 
+                             devices to your desired status. And in the morning when you turn off this mode
+                             divcess will turned back to their previous status.
+                              This way you will not have to change devices' status each 
+                              morning and night manually.
+                            </h6>
+                    
                         </div>
                     </div>
                 </div>
