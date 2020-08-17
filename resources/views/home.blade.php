@@ -1037,7 +1037,7 @@ function update_dim_state(room_index, element){
                 @php
                     $image = Auth::user()->image_name;
                 @endphp
-                src="<?php echo asset("storage/$image")?>"
+                src="<?php echo asset("storage/app/public/$image")?>"
             }
             @endif 
             alt="user">
