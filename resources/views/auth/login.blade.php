@@ -2,6 +2,11 @@
 
 <link rel="stylesheet" href="{{ asset('css/loginpagecss.css') }}">
 @section('content')
+@if (session('error'))
+<div class="alert alert-error hidecroosss">
+    <h3 style="color: red"> {{ session('error') }}</h3>
+</div>
+@endif
 <div class="login-container">
     <section class="login" id="login">
         <header>
