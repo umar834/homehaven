@@ -135,8 +135,15 @@ class HomeController extends Controller
             'lastmonthbill' => $lastmonthbill,
             'nightenabled' => $nightenabled
         );
-       
-        if (Auth::user() && Auth::user()->role != 'admin')
+        
+        if (Auth::user() && Auth::user()->status == 'disabled')
+        {
+             Auth::logout();
+             return redirect('/login')
+             ->with('error',"Sorry, your accound is disabled. Please contact our support team.");
+        }
+        
+        else if (Auth::user() && Auth::user()->role != 'admin')
         {
             return view('home')->with($data);
         }
