@@ -152,7 +152,7 @@
             </div>
         </section>
 
-         <!-- Dashboard-->
+         <!-- Get App-->
          <section class="page-section bg-dark text-white" id="our-app">
             <div class="container text-center">
                 <h2 class="mb-4">Get Our Mobile App </h2>
@@ -162,7 +162,7 @@
                     100% control over the devices, power monitoring, get tips and suggestions, keep an eye over 
                     the house even when you are out and much much more.
                 </p>
-                <a class="btn btn-light btn-xl" href="#">Download App Now!</a>
+                <a class="btn btn-light btn-xl" href="/downloadapp">Download App Now!</a>
             </div>
         </section>
         <!-- FAQ-->

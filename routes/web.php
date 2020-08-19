@@ -109,3 +109,5 @@ Route::post('/setnightmode','HomeController@nightmode');
 Route::post('/setautomode','HomeController@automode');
 
 Route::post('/contactus','HomePage@contactus');
+
+Route::get('/downloadapp', 'downloadController@getmobileapp');
