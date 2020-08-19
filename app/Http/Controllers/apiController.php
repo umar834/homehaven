@@ -162,7 +162,7 @@ class apiController extends Controller
                 
             $date = now();
             $time = strtotime($date);
-            $ago_time = $time - (305 * 60);   
+            $ago_time = $time - (545 * 60);   
             $date = date("Y-m-d H:i:s", $ago_time);
 
             $today_time = $time - ($time % 86400) - 18000;   // one day = 86400  => 24 hrs
