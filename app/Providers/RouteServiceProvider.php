@@ -46,6 +46,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapXApiRoutes();
+
         //
     }
 
@@ -76,5 +78,20 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "xapi" routes for the application.
+     *
+     * These routes are typically stateless and ssl-less.
+     *
+     * @return void
+     */
+    protected function mapXApiRoutes()
+    {
+        Route::prefix('xapi')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/xapi.php'));
     }
 }
