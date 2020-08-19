@@ -124,7 +124,6 @@ class HomeController extends Controller
 
 
         $nightenabled = Auth::user()->Night_Enabled;
-        $autoenabled = Auth::user()->Auto_Enabled;
         $bill_target = Auth::user()->bill_target;
 
         $data = array(
@@ -134,8 +133,7 @@ class HomeController extends Controller
             'bill' => $bill,
             'bill_target' => $bill_target,
             'lastmonthbill' => $lastmonthbill,
-            'nightenabled' => $nightenabled,
-            'autoenabled' => $autoenabled
+            'nightenabled' => $nightenabled
         );
         
         if (Auth::user() && Auth::user()->status == 'disabled')
@@ -509,20 +507,4 @@ class HomeController extends Controller
         return redirect()->back()->with("success","Room deleted successfully!");
     }
 
-//************************AUTO MODE *************************************************/
-    public function automode(Request $request)
-    {
-        $id = Auth::user()->id;
-        if($request->state == 'true'){
-            DB::update('update users set Auto_Enabled = ? where id = ?',[1, $id]);
-        } 
-        else{
-            DB::update('update users set Auto_Enabled = ? where id = ?',[0, $id]);
-        }
-        return "Done".$request->state;
-    }
 }
-
-
-
-

@@ -1030,7 +1030,7 @@ function update_dim_state(room_index, element){
             <form action="/saveuserimage" method="post" enctype="multipart/form-data">
                 @csrf
                 <img id="uploadeddp"
-            @if (Auth::user()->image_name == null){
+                @if (Auth::user()->image_name == null){
             src="{{asset('images/user.png')}}"
              }
             @else{
@@ -1039,27 +1039,24 @@ function update_dim_state(room_index, element){
                 @endphp
                 src="<?php echo asset("storage/app/public/$image")?>"
             }
-            @endif 
+            @endif  
             alt="user">
                  
                 <input type="file" class="choosedp" accept="image/*" name="dpimg" id="dpfile">
-                <label class="dpbutton" for="dpfile">Change Image</label>
-                <button style="margin-top: 10px; float: right; background-color: #2779ff" type="submit" class="btn btn-success" disabled>Save Image</button>
+                <label style="margin-top: 20px" class="dpbutton" for="dpfile">Change Image</label>
+                <button style="margin-top: 10px; float: right;" type="submit" class="btn btn-primary" disabled>Save Image</button>
             </form>
             </div>
 
             <div class="settingcontent editemail">
                 <label for="emailid">Email: </label>
-                <input type="email" class="form-control" name="email" id="emailid" value="{{Auth::user()->email}}" readonly>
-                <label style="margin-top: 10px" onclick="window.location='{{ url("changeEmail") }}'" class="dpbutton">Change Email</label>
+                <input style="width: 55%;" type="email" class="form-control" name="email" id="emailid" value="{{Auth::user()->email}}" readonly>
+                <button style="float: right; margin-top: -37px" class="btn btn-primary" onclick="window.location='{{ url("changeEmail") }}'">Change Email</button>
             </div>
 
-            <div class="settingcontent editpassword">
+            <div style="padding: 20px 0" class="settingcontent editpassword">
                 <label>Password: <span style="color:#858585;">&nbsp;***********</span></label>
-                <label onclick="window.location='{{ url("changePassword") }}'" class="dpbutton editpasswordbutton">Change Password</label>
-            </div>
-            <div class="settingcontent">
-               
+                <button style="float: right;" class="btn btn-primary" onclick="window.location='{{ url("changePassword") }}'">Change Password</button>
             </div>
         </div>
     </div>

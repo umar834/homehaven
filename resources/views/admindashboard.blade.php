@@ -38,15 +38,15 @@
         <div class="userInfo">
             <img 
             @if (Auth::user()->image_name == null){
-            src="{{asset('images/user.png')}}"
-             }
-            @else{
-                @php
-                    $image = Auth::user()->image_name;
-                @endphp
-                src="<?php echo asset("storage/$image")?>"
-            }
-            @endif 
+                src="{{asset('images/user.png')}}"
+                 }
+                @else{
+                    @php
+                        $image = Auth::user()->image_name;
+                    @endphp
+                    src="<?php echo asset("storage/app/public/$image")?>"
+                }
+                @endif 
             width="80" height="80" alt="user">
             <p>Hello,</p>
             <h3>{{ Auth::user()->name }}</h3>
@@ -56,7 +56,6 @@
             <h4>Dashboard</h4>
             <button onclick="openCity(event, 'mainwindow')" id="mainwindowbutton" class="tablinks active"><i class="fas fa-tachometer-alt"></i>&nbsp; Manage Users</button><br>
             <button onclick="openCity(event, 'controls')" id="controlsbutton" class="tablinks"><i class="fas fa-dharmachakra"></i></i>&nbsp; Manage Rooms</button><br>
-            <button onclick="openCity(event, 'nightmode')" class="tablinks"><i class="fas fa-moon"></i></i>&nbsp; Night Mode</button><br>
             <button onclick="openCity(event, 'settings')" class="tablinks"><i class="fa fa-wrench"></i>&nbsp; Settings</button><br>
             <button href="{{ route('logout') }}"
                     onclick="event.preventDefault();
@@ -294,6 +293,42 @@
             
         </div>
 
+        <!--*****************SETTINGS TAB****************-->
+        <div id="settings" class="tabcontent settingstab col-md-8 col-lg-6 col-sm-12 col-xs-12">
+            <div class="editdp settingcontent">
+            <form action="/saveuserimage" method="post" enctype="multipart/form-data">
+                @csrf
+                <img id="uploadeddp"
+                @if (Auth::user()->image_name == null){
+            src="{{asset('images/user.png')}}"
+             }
+            @else{
+                @php
+                    $image = Auth::user()->image_name;
+                @endphp
+                src="<?php echo asset("storage/app/public/$image")?>"
+            }
+            @endif  
+            alt="user">
+                 
+                <input type="file" class="choosedp" accept="image/*" name="dpimg" id="dpfile">
+                <label style="margin-top: 20px" class="dpbutton" for="dpfile">Change Image</label>
+                <button style="margin-top: 10px; float: right;" type="submit" class="btn btn-primary" disabled>Save Image</button>
+            </form>
+            </div>
+
+            <div class="settingcontent editemail">
+                <label for="emailid">Email: </label>
+                <input style="width: 55%;" type="email" class="form-control" name="email" id="emailid" value="{{Auth::user()->email}}" readonly>
+                <button style="float: right; margin-top: -37px" class="btn btn-primary" onclick="window.location='{{ url("changeEmail") }}'">Change Email</button>
+            </div>
+
+            <div style="padding: 20px 0" class="settingcontent editpassword">
+                <label>Password: <span style="color:#858585;">&nbsp;***********</span></label>
+                <button style="float: right;" class="btn btn-primary" onclick="window.location='{{ url("changePassword") }}'">Change Password</button>
+            </div>
+        </div>
+
         <!--************************************************************-->
         <!--*********************MANAGE ROOMS TAB***********************-->
         <!--************************************************************-->
@@ -481,8 +516,6 @@
                         else {
                             $room->dev1_type = 'None';
                         }
-
-
                         if($room->dev2_type == 1)
                         {
                             $room->dev2_type = 'Light';
@@ -498,8 +531,6 @@
                         else {
                             $room->dev2_type = 'None';
                         }
-
-
                         if($room->dev3_type == 1)
                         {
                             $room->dev3_type = 'Light';
@@ -515,8 +546,6 @@
                         else {
                             $room->dev3_type = 'None';
                         }
-
-
                         if($room->dev4_type == 1)
                         {
                             $room->dev4_type = 'Light';
@@ -532,8 +561,6 @@
                         else {
                             $room->dev4_type = 'None';
                         }
-
-
                         if($room->dim_type == 1)
                         {
                             $room->dim_type = 'Light';
@@ -726,55 +753,9 @@
                 @endif
             </div>
         </div>
-
-         <!--*********************NIGHTMODE MAIN TAB***********************-->
-         <div id="nightmode" style="overflow-x: hidden; overflow-y:auto; max-height: 100%;" class="tabcontent nightmodemain">
-            <h1>Content 3</h1>
-         </div>
-
-
-        <!--*****************SETTINGS TAB****************-->
-        <div id="settings" class="tabcontent settingstab col-md-8 col-lg-6 col-sm-12 col-xs-12">
-            <div class="editdp settingcontent">
-            <form action="/saveuserimage" method="post" enctype="multipart/form-data">
-                @csrf
-                <img id="uploadeddp"
-            @if (Auth::user()->image_name == null){
-            src="{{asset('images/user.png')}}"
-             }
-            @else{
-                @php
-                    $image = Auth::user()->image_name;
-                @endphp
-                src="<?php echo asset("storage/$image")?>"
-            }
-            @endif 
-            alt="user">
-                 
-                <input type="file" class="choosedp" accept="image/*" name="dpimg" id="dpfile">
-                <label class="dpbutton" for="dpfile">Change Image</label>
-                <button style="margin-top: 10px; float: right; background-color: #2779ff" type="submit" class="btn btn-success" disabled>Save Image</button>
-            </form>
-            </div>
-
-            <div class="settingcontent editemail">
-                <label for="emailid">Email: </label>
-                <input type="email" class="form-control" name="email" id="emailid" value="{{Auth::user()->email}}" readonly>
-                <label style="margin-top: 10px" onclick="window.location='{{ url("changeEmail") }}'" class="dpbutton">Change Email</label>
-            </div>
-
-            <div class="settingcontent editpassword">
-                <label>Password: <span style="color:#858585;">&nbsp;***********</span></label>
-                <label onclick="window.location='{{ url("changePassword") }}'" class="dpbutton editpasswordbutton">Change Password</label>
-            </div>
-            <div class="settingcontent">
-               
-            </div>
-        </div>
     </div>
 </div>
 <script>
-
 /*UPLOAD IMAGE-DP*/
 function readURL(input) {
 if (input.files && input.files[0]) {
@@ -788,7 +769,6 @@ reader.readAsDataURL(input.files[0]); // convert to base64 string
 $("#dpfile").change(function() {
 readURL(this);
 });
-
 /*CHECK IF INPUT IS EMPTY*/
 $('input[type=file]').change(function(){
     if($('input[type=file]').val()==''){
@@ -798,6 +778,5 @@ $('input[type=file]').change(function(){
       $('button').attr('disabled',false);
     }
 })
-
 </script>
 @endsection
