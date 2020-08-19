@@ -8,7 +8,7 @@ class downloadController extends Controller
 {
     public function getmobileapp()
     {
-        $file= public_path(). "\downloadables\homehaven.apk";
+        $file= public_path(). "/downloadables/homehaven.apk";
 
         $headers = [
             'Content-Type' => 'application/apk',
