@@ -88,26 +88,29 @@ Route::post('/changeEmail','HomeController@changeEmail')->name('changeEmail');
 Route::get('/', 'HomePage@index');
 Route::get('/home', 'HomeController@index');
 Route::get('/welcome', 'HomeController@welcome');
-Route::post('/savenightmode', 'HomeController@changeNightmode')->name('changeNightmode');
 Route::post('/saveuserimage', 'HomeController@storeimage')->name('storeimage');
 
-Route::post('/deleteuser/{userid}', 'HomeController@deleteuser');
-Route::post('/updateuser', 'HomeController@updateuser');
-Route::post('/searchuser', 'HomeController@searchuser');
 
-Route::post('/updateroom', 'HomeController@updateroom');
-Route::post('/searchuserbyid', 'HomeController@searchuserbyid');
-Route::post('/addnewroom', 'HomeController@addnewroom');
-Route::post('/deleteroom', 'HomeController@deleteroom');
+Route::post('/deleteuser/{userid}', 'adminController@deleteuser');
+Route::post('/updateuser', 'adminController@updateuser');
+Route::post('/searchuser', 'adminController@searchuser');
+
+Route::post('/updateroom', 'adminController@updateroom');
+Route::post('/searchuserbyid', 'adminController@searchuserbyid');
+Route::post('/addnewroom', 'adminController@addnewroom');
+Route::post('/deleteroom', 'adminController@deleteroom');
+
 
 Route::get('/test', 'HomeController@index');
 
 Route::post('/update_state','HomeController@update_state');
 Route::post('/update_dim_state','HomeController@update_dim_state');
 
-Route::post('/setnightmode','HomeController@nightmode');
-Route::post('/setautomode','HomeController@automode');
+
+Route::post('/savenightmode', 'NightNAutoController@changeNightmode')->name('changeNightmode');
+Route::post('/setnightmode','NightNAutoController@nightmode');
+Route::post('/setautomode','NightNAutoController@automode');
+
 
 Route::post('/contactus','HomePage@contactus');
-
 Route::get('/downloadapp', 'downloadController@getmobileapp');

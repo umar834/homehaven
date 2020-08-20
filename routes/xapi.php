@@ -19,4 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post("edgesync","apiController@edgesync");
+Route::post("edgesync","xapiController@edgesync");

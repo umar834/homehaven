@@ -29,12 +29,11 @@ Route::post("getroomstate","apiController@getroomstate");
 Route::post("billprediction","apiController@billprediction");
 
 
-Route::post("logpower","apiController@logpower");
 Route::get("HC7sVLHeMMRqFnhZef2hW49w7TJW9sVj","apiController@updatetoken");
 Route::get("test","apiController@test");
 
 
-Route::get("mSjei38N2MEi3kM246Hkaf87Ao4odj8OQmsfjGaDO3eEi84Mh374gYGDh","apiController@automodedayjob");
-Route::get("D8N2MEi3kM246H4gYG7Ao4odj8OQmsfjGaDO3eEhkaf8mSjei3i84Mh37","apiController@automodenightjob");
-Route::get("GaM2a48MjHhQmsfaD4g7Ao4i76HmSjs3kM2jO3S3YGDh46Ei3kf8fk4DG","apiController@automodedaysetstate");
-Route::get("OQm2MYG7Ao4hkaf3O3eEN2MEi3dj8oodj8O7gmi38NeD8i84MhjeeEi84","apiController@automodenightsetstate");
+Route::get("mSjei38N2MEi3kM246Hkaf87Ao4odj8OQmsfjGaDO3eEi84Mh374gYGDh","cronJobController@automodedayjob");
+Route::get("D8N2MEi3kM246H4gYG7Ao4odj8OQmsfjGaDO3eEhkaf8mSjei3i84Mh37","cronJobController@automodenightjob");
+Route::get("GaM2a48MjHhQmsfaD4g7Ao4i76HmSjs3kM2jO3S3YGDh46Ei3kf8fk4DG","cronJobController@automodedaysetstate");
+Route::get("OQm2MYG7Ao4hkaf3O3eEN2MEi3dj8oodj8O7gmi38NeD8i84MhjeeEi84","cronJobController@automodenightsetstate");
