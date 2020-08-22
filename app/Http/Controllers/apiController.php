@@ -107,8 +107,12 @@ class apiController extends Controller
         $room_info = "inv";
         if($token != "invalid"){
             $room_info = self::roominfo($request, $token);
+            
+            $email = $request->get('email');
+            $user = DB::table('users')->where('email', '=', $email)->first();
+            $name = $user->name;
             if($room_info != "invalid")
-                return "ok" . $token . $room_info;
+                return "ok" . $token . $room_info . ':'.$name;
         }
         return $token . $room_info;
     }
