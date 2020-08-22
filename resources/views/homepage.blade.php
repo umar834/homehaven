@@ -130,10 +130,14 @@
                     <div class="col-lg-8 text-center">
                         <h2 class="text-white mt-0">HomeHaven</h2>
                         <hr class="divider light my-4" />
-                        <p style="color: white !important; font-size: 18px" class="text-white-50 mb-4">HomeHaven is an IoT based company that has the aim to take Internet
-                            of things to the next level. We are here to provide you with the secure, reliable and fast
-                            home Automation solutions that would help you keep your home not only autmoated but also secure. We 
-                            provide online controlable devices with power consumpution updates, security alerts and much much more...
+                        <p style="color: white !important; font-size: 18px" class="text-white-50 mb-4">Home haven is an ioT based company, emerging with the aim to take internet of things to next level. A
+                            home is considered to be the best place for an individual . With technology advancements, more people
+                            incorporating smart technology into their lives. We are here to provide you with the secure, reliable and
+                            fast home automation solutions that would help you to keep your home not only automated, but they
+                            also assure security. Initially we are providing solutions for controlling electrical appliances like fans,
+                            bulbs and sockets with power consumption reports. Home haven is further looking to incorporate the
+                            automation of doors and live video streaming of the house to make it more secure and reliable. Our
+                            team is working hard to make sure that our products are up to the mark and easier to use.
                         </p>
                     </div>
                 </div>
