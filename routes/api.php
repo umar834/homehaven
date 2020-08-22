@@ -31,7 +31,6 @@ Route::post("billprediction","apiController@billprediction");
 
 Route::get("HC7sVLHeMMRqFnhZef2hW49w7TJW9sVj","apiController@updatetoken");
 Route::get("test","apiController@test");
-Route::get("getimage","profileImageController@get_image");
 
 
 Route::get("mSjei38N2MEi3kM246Hkaf87Ao4odj8OQmsfjGaDO3eEi84Mh374gYGDh","cronJobController@automodedayjob");
