@@ -16,6 +16,8 @@ class profileImageController extends Controller
         if ($user !== null) {
             $image = $user->image_name;
         }
-        return '<img src='.asset("storage/app/public/$image").' height="150px" width="150px" />';
+        $storagePath = storage_path("app/public/$image");
+
+        return response()->file($storagePath);
     }
 }

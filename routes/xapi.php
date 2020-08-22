@@ -20,4 +20,3 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::post("edgesync","xapiController@edgesync");
-Route::get("getimage","profileImageController@get_image");
