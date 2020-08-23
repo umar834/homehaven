@@ -116,6 +116,7 @@ class apiController extends Controller
         }
         return $token . $room_info;
     }
+    
     public function verifytoken(Request $request)
     {
         $email = $request->get('email');

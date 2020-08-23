@@ -282,11 +282,11 @@ function update_dim_state(room_index, element){
         <div class="row roomsmaindiv">
             <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                 <div class="frequentlyusedcontrolles">
-                    <h2>Quick Access</h2>
+                    <h2 style="font-size: 26px">Quick Access</h2>
                     <div class="row">
 
                         <div class=" col-xs-10 col-sm-5 col-md-5 col-lg-5 ">
-                            <h4>Auto mode :<span>
+                            <h4 style="font-size: 20px">Auto mode :<span>
                                 <label style="margin-left:20px; margin-top: 5px; float: none;" class="switch controlswitch">
                                     
                                 @if($autoenabled == 0)
@@ -300,7 +300,7 @@ function update_dim_state(room_index, element){
                                 </label>
                                 </span>
                             </h4>
-                            <h6 align="justify"> 
+                            <h6 style="font-size: 15px; color: rgb(136, 136, 136)" align="justify"> 
                              You can activate this mode and then the devices will be controlled
                               by the system and you won't have to do anything. 
                               System will analyze the suroundings and previous data to manage all devices.
@@ -313,7 +313,7 @@ function update_dim_state(room_index, element){
                         <div class=" col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
                         </div>
                         <div class=" col-xs-10 col-sm-5 col-md-5 col-lg-5 ">
-                            <h4>Night mode :<span>
+                            <h4 style="font-size: 20px">Night mode :<span>
                                 <label style="margin-left:20px; margin-top: 5px; float: none;" class="switch controlswitch">
                                     
                                 @if($nightenabled == 0)
@@ -327,7 +327,7 @@ function update_dim_state(room_index, element){
                                 </label>
                                 </span>
                             </h4>
-                            <h6 align="justify">
+                            <h6 style="font-size: 15px; color: rgb(136, 136, 136)" align="justify">
                             You can set your preferences that which devices you want to turn on/off when
                              night starts and when you activate this mode system will automatically set 
                              devices to your desired status. And in the morning when you turn off this mode
