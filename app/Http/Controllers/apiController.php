@@ -265,39 +265,46 @@ class apiController extends Controller
                 $scnd_last_log_count += $scnd_last_log->log_5 != 0 ? 1 : 0;
             }
 
+            $total_records = 1;
             $watt = 0;
             if($last_log != null)
             {
                 if ($last_log->log_5)
                 {
                     $watt = $last_log->log_5;
+                    $total_records = 6;
                 }
                 elseif ($last_log->log_4)
                 {
                     $watt = $last_log->log_4;
+                    $total_records = 5;
                 }
                 elseif ($last_log->log_3)
                 {
                     $watt = $last_log->log_3;
+                    $total_records = 4;
                 }
                 elseif ($last_log->log_2)
                 {
                     $watt = $last_log->log_2;
+                    $total_records = 3;
                 }
                 elseif ($last_log->log_1)
                 {
                     $watt = $last_log->log_1;
+                    $total_records = 2;
                 }
                 elseif ($last_log->log_0)
                 {
                     $watt = $last_log->log_0;
+                    $total_records = 1;
                 }
                 else {
                     $watt = 0;
                 }
             }
             
-            $last_avg = $last_total / $last_log_count;
+            $last_avg = $last_total / $total_records;
             $scnd_avg = $scnd_total / 6.0;
 
 
