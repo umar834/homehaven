@@ -26,11 +26,10 @@ Route::post("verifytoken","apiController@verifytoken");
 Route::post("getroominfo","apiController@getroominfo");
 Route::post("setroomstate","apiController@setroomstate");
 Route::post("getroomstate","apiController@getroomstate");
-Route::post("billprediction","apiController@billprediction");
+Route::post("getconsumpdata","apiController@consumptionData");
 
 
 Route::get("HC7sVLHeMMRqFnhZef2hW49w7TJW9sVj","apiController@updatetoken");
-Route::get("test","apiController@test");
 Route::get("getimage","profileImageController@get_image");
 
 
