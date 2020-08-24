@@ -302,7 +302,7 @@ class apiController extends Controller
 
 
 
-            return "ok:" . $watt . ':'. $bill . ':' . $lastmonthbill . ':' . $last_avg . ':' . $scnd_avg;
+            return "ok:" . $watt . ':'. $bill . ':' . $lastmonthbill->amount . ':' . $last_avg . ':' . $scnd_avg;
         }
         return "invalid";
 
