@@ -170,50 +170,8 @@ class apiController extends Controller
         return "invalid";
     }
 
-
-    public function test(Request $request)
-    {
-
-        //dump(Str::random(32));
-        $last_log = DB::table('power_log')->where('user_id', '=', '1')->latest('date')->first();
-        $scnd_last_log = DB::table('power_log')->where('user_id', '=', '1')->latest('date')->skip('1')->first();
-
-        $last_log_count = 0;
-        $scnd_last_log_count = 0;
-        $last_total = 0;
-        $scnd_total = 0;
-        if ($last_log != null) {
-            $last_total = $last_log->log_0 + $last_log->log_1 + $last_log->log_2 +
-                $last_log->log_3 + $last_log->log_4 + $last_log->log_5;
-            $last_log_count += $last_log->log_0 != 0 ? 1 : 0;
-            $last_log_count += $last_log->log_1 != 0 ? 1 : 0;
-            $last_log_count += $last_log->log_2 != 0 ? 1 : 0;
-            $last_log_count += $last_log->log_3 != 0 ? 1 : 0;
-            $last_log_count += $last_log->log_4 != 0 ? 1 : 0;
-            $last_log_count += $last_log->log_5 != 0 ? 1 : 0;
-        }
-        if ($scnd_last_log != null) {
-            $scnd_total = $scnd_last_log->log_0 + $scnd_last_log->log_1 + $scnd_last_log->log_2 +
-                $scnd_last_log->log_3 + $scnd_last_log->log_4 + $scnd_last_log->log_5;
-            $scnd_last_log_count += $scnd_last_log->log_0 != 0 ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_1 != 0 ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_2 != 0 ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_3 != 0 ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_4 != 0 ? 1 : 0;
-            $scnd_last_log_count += $scnd_last_log->log_5 != 0 ? 1 : 0;
-        }
-        dump($last_log_count);
-        dump($scnd_last_log_count);
-        dump($last_total);
-        dump($scnd_total);
-        dump($last_log);
-        dump($scnd_last_log);
-
-        //dd($rooms);
-        //return 'o'.$rooms_str.'k';
-    }
     
-    public function billprediction(Request $request){
+    public function consumptionData(Request $request){
         if(self::verifytoken($request) == "ok")
         {
             $email = $request->get('email');
@@ -276,11 +234,75 @@ class apiController extends Controller
             // Add 10% tax
             $bill *= 1.1;
             
-            dump($total_power);
-            dump($total_days);
-            dump($bill);
 
-            return "ok";
+            $lastmonthbill = DB::table('bill')->where('user_id', '=', $id)->orderby('date', 'desc')->first();
+            
+            $last_log = DB::table('power_log')->where('user_id', '=', $id)->latest('date')->first();
+            $scnd_last_log = DB::table('power_log')->where('user_id', '=', $id)->latest('date')->skip('1')->first();
+
+            $last_log_count = 0;
+            $scnd_last_log_count = 0;
+            $last_total = 0;
+            $scnd_total = 0;
+            if ($last_log != null) {
+                $last_total = $last_log->log_0 + $last_log->log_1 + $last_log->log_2 +
+                    $last_log->log_3 + $last_log->log_4 + $last_log->log_5;
+                $last_log_count += $last_log->log_0 != 0 ? 1 : 0;
+                $last_log_count += $last_log->log_1 != 0 ? 1 : 0;
+                $last_log_count += $last_log->log_2 != 0 ? 1 : 0;
+                $last_log_count += $last_log->log_3 != 0 ? 1 : 0;
+                $last_log_count += $last_log->log_4 != 0 ? 1 : 0;
+                $last_log_count += $last_log->log_5 != 0 ? 1 : 0;
+            }
+            if ($scnd_last_log != null) {
+                $scnd_total = $scnd_last_log->log_0 + $scnd_last_log->log_1 + $scnd_last_log->log_2 +
+                    $scnd_last_log->log_3 + $scnd_last_log->log_4 + $scnd_last_log->log_5;
+                $scnd_last_log_count += $scnd_last_log->log_0 != 0 ? 1 : 0;
+                $scnd_last_log_count += $scnd_last_log->log_1 != 0 ? 1 : 0;
+                $scnd_last_log_count += $scnd_last_log->log_2 != 0 ? 1 : 0;
+                $scnd_last_log_count += $scnd_last_log->log_3 != 0 ? 1 : 0;
+                $scnd_last_log_count += $scnd_last_log->log_4 != 0 ? 1 : 0;
+                $scnd_last_log_count += $scnd_last_log->log_5 != 0 ? 1 : 0;
+            }
+
+            $watt = 0;
+            if($last_log != null)
+            {
+                if ($last_log->log_5)
+                {
+                    $watt = $last_log->log_5;
+                }
+                elseif ($last_log->log_4)
+                {
+                    $watt = $last_log->log_4;
+                }
+                elseif ($last_log->log_3)
+                {
+                    $watt = $last_log->log_3;
+                }
+                elseif ($last_log->log_2)
+                {
+                    $watt = $last_log->log_2;
+                }
+                elseif ($last_log->log_1)
+                {
+                    $watt = $last_log->log_1;
+                }
+                elseif ($last_log->log_0)
+                {
+                    $watt = $last_log->log_0;
+                }
+                else {
+                    $watt = 0;
+                }
+            }
+            
+            $last_avg = $last_total / $last_log_count;
+            $scnd_avg = $scnd_total / 6.0;
+
+
+
+            return "ok:" . $watt . ':'. $bill . ':' . $lastmonthbill . ':' . $last_avg . ':' . $scnd_avg;
         }
         return "invalid";
 
