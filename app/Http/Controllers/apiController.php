@@ -182,7 +182,7 @@ class apiController extends Controller
             
             $date =  date("Y-m-d", strtotime(now()->startOfMonth()));
             $power_logs = DB::table('power_log')->where([['user_id', '=', $id],['date', '>=', $date]])->get();
-            dump($date);
+            
 
             $total_power = 0;
             $total_days = 0;
