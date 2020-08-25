@@ -407,7 +407,7 @@ function update_dim_state(room_index, element){
 
                     @elseif($room->dev1_type == 3)
                     <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET<span class="controlspeed">
                             <label class="switch controlswitch">
                                 
                                 @if($dev1_state == 0)
@@ -461,7 +461,7 @@ function update_dim_state(room_index, element){
 
                     @elseif($room->dev2_type == 3)
                     <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET<span class="controlspeed">
                             <label class="switch controlswitch">
                                    
                             @if($dev2_state == 0)
@@ -515,7 +515,7 @@ function update_dim_state(room_index, element){
 
                     @elseif($room->dev3_type == 3)
                     <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET<span class="controlspeed">
                             <label class="switch controlswitch">
      
                             @if($dev3_state == 0)
@@ -569,7 +569,7 @@ function update_dim_state(room_index, element){
 
                     @elseif($room->dev4_type == 3)
                     <div class="controldiv">
-                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>PLUG<span class="controlspeed">
+                        <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET<span class="controlspeed">
                             <label class="switch controlswitch">
 
                             @if($dev4_state == 0)
@@ -624,7 +624,7 @@ function update_dim_state(room_index, element){
 
                     @elseif($room->dim_type == 3)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Plug<span class="controlspeed">
+                    <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET<span class="controlspeed">
                     Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
                             <label class="switch controlswitch">
 
@@ -709,7 +709,7 @@ function update_dim_state(room_index, element){
                         <!-- DEVICE ONE -->
                         @if ($room->dev1_type == 1)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
                                     
@@ -748,7 +748,7 @@ function update_dim_state(room_index, element){
     
                         @elseif($room->dev1_type == 3)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
                                 
@@ -770,7 +770,7 @@ function update_dim_state(room_index, element){
                         <!-- DEVICE TWO -->
                         @if ($room->dev2_type == 1)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
 
@@ -809,7 +809,7 @@ function update_dim_state(room_index, element){
     
                         @elseif($room->dev2_type == 3)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
                                 
@@ -831,7 +831,7 @@ function update_dim_state(room_index, element){
                         <!-- DEVICE THREE -->
                         @if ($room->dev3_type == 1)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
 
@@ -870,7 +870,7 @@ function update_dim_state(room_index, element){
     
                         @elseif($room->dev3_type == 3)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
                                 
@@ -892,7 +892,7 @@ function update_dim_state(room_index, element){
                         <!-- DEVICE FOUR -->
                         @if ($room->dev4_type == 1)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
 
@@ -931,7 +931,7 @@ function update_dim_state(room_index, element){
     
                         @elseif($room->dev4_type == 3)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
                                 
@@ -953,7 +953,7 @@ function update_dim_state(room_index, element){
                         <!-- DEVICE FIVE -->
                         @if ($room->dim_type == 1)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT</h4>
                             <h6>Start State: <span>
                                 <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
 
@@ -994,7 +994,7 @@ function update_dim_state(room_index, element){
     
                         @elseif($room->dim_type == 3)
                         <div class="controldiv">
-                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>Socket</h4>
+                            <h4><i style="margin-right: 10px;" class="fas fa-plug"></i>SOCKET</h4>
                             <h6>Start State: <span>
                             <label style="margin-left:20px; margin-top: 0px; float: none;" class="switch controlswitch">
 
