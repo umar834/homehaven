@@ -51,6 +51,28 @@ class apiController extends Controller
         return "invalid";
     }
 
+
+    public function setnightroomstate(Request $request){
+        if(self::verifytoken($request) == "ok")
+        {
+            if(self::set_night_room_state($request) == "ok"){
+                return "ok";
+            }
+        }
+        return "invalid";
+    }
+
+    public function getnightroomstate(Request $request){
+        if(self::verifytoken($request) == "ok")
+        {
+            $state =self::get_night_room_state($request);
+            if($state > -1 && $state < 256){
+                return $state;
+            }
+        }
+        return "invalid";
+    }
+
     private function get_room_state(Request $request){
         $email = $request->get('email');
         $room_index = $request->get('room_index');
@@ -76,6 +98,34 @@ class apiController extends Controller
         //dump($room_index);
         //dump($email);
         DB::update('update rooms set state = ?, priority = true where user_id = ? AND room_index = ?',
+        [$state, $id, $room_index]);
+        return "ok";
+    }
+    private function get_night_room_state(Request $request){
+        $email = $request->get('email');
+        $room_index = $request->get('room_index');
+
+        $user = DB::table('users')->where('email', '=', $email)->first();
+        $id = $user->id;
+
+        $room = DB::table('rooms')->where([['user_id', '=', $id],['room_index', '=', $room_index]])->first();
+        if($room != null)
+            return  sprintf("%03d", $room->night_state);
+        else return -10;
+    }
+    private function set_night_room_state(Request $request){
+        $email = $request->get('email');
+        $room_index = $request->get('room_index');
+        $state = $request->get('state');
+
+        $user = DB::table('users')->where('email', '=', $email)->first();
+        $id = $user->id;
+
+        //dump($id);
+        //dump($state);
+        //dump($room_index);
+        //dump($email);
+        DB::update('update rooms set night_state = ?, priority = true where user_id = ? AND room_index = ?',
         [$state, $id, $room_index]);
         return "ok";
     }
