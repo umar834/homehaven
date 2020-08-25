@@ -375,7 +375,7 @@ function update_dim_state(room_index, element){
                 <!--DEVICE ONE-->
                     @if ($room->dev1_type == 1)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT<span>
                             <label class="switch controlswitch">
                                 @if($dev1_state == 0)
                                 <input onclick = 'update_state("{{$room->room_index}}",1,this)' type="checkbox" class="switch-input">
@@ -427,7 +427,7 @@ function update_dim_state(room_index, element){
                     <!--DEVICE TWO-->
                     @if ($room->dev2_type == 1)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT<span>
                             <label class="switch controlswitch">
                                 
                                 @if($dev2_state == 0)
@@ -481,7 +481,7 @@ function update_dim_state(room_index, element){
                     <!--DEVICE THREE-->
                     @if ($room->dev3_type == 1)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT<span>
                             <label class="switch controlswitch">
                                   
                             @if($dev3_state == 0)
@@ -535,7 +535,7 @@ function update_dim_state(room_index, element){
                     <!--DEVICE FOUR-->
                     @if ($room->dev4_type == 1)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span>
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT<span>
                             <label class="switch controlswitch">
      
                             @if($dev4_state == 0)
@@ -589,7 +589,7 @@ function update_dim_state(room_index, element){
                     <!--DEVICE FIVE-->
                     @if ($room->dim_type == 1)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>Light<span class="controlspeed">
+                    <h4><i style="margin-right: 10px;" class="fas fa-lightbulb"></i>LIGHT<span class="controlspeed">
                     Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
                             <label class="switch controlswitch">
 
@@ -606,7 +606,7 @@ function update_dim_state(room_index, element){
                     </div>
                     @elseif($room->dim_type == 2)
                     <div class="controldiv">
-                    <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>Fan<span class="controlspeed">
+                    <h4><i style="margin-right: 10px;" class="fas fa-fan"></i>FAN<span class="controlspeed">
                     Speed: <input type ="range"  onclick = 'update_dim_state("{{$room->room_index}}",this)'  value="{{$dev5_state}}" min="0" max="7"/>
                             <label class="switch controlswitch">
 
