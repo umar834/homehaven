@@ -110,6 +110,7 @@ Route::post('/update_dim_state','HomeController@update_dim_state');
 Route::post('/savenightmode', 'NightNAutoController@changeNightmode')->name('changeNightmode');
 Route::post('/setnightmode','NightNAutoController@nightmode');
 Route::post('/setautomode','NightNAutoController@automode');
+Route::post('/setsecuritymode','HomeController@securitymode');
 
 
 Route::post('/contactus','HomePage@contactus');

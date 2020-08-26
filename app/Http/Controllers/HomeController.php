@@ -125,6 +125,7 @@ class HomeController extends Controller
 
         $nightenabled = Auth::user()->Night_Enabled;
         $autoenabled = Auth::user()->Auto_Enabled;
+        $securityenabled = Auth::user()->Security_Enabled;
         $bill_target = Auth::user()->bill_target;
 
         $data = array(
@@ -135,6 +136,7 @@ class HomeController extends Controller
             'bill_target' => $bill_target,
             'lastmonthbill' => $lastmonthbill,
             'nightenabled' => $nightenabled,
+            'securityenabled' => $securityenabled,
             'autoenabled' => $autoenabled
         );
         
@@ -249,6 +251,17 @@ class HomeController extends Controller
 
     }
 
+    public function securitymode(Request $request)
+{
+    $id = Auth::user()->id;
+    if($request->state == 'true'){
+        DB::update('update users set Security_Enabled = ? where id = ?',[1, $id]);
+    } 
+    else{
+        DB::update('update users set Security_Enabled = ? where id = ?',[0, $id]);
+    }
+    return "Done".$request->state;
+}
 
 }
 

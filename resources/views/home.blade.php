@@ -42,6 +42,17 @@ function auto_enable(element){
                }
             });
 }
+function security_enable(element){
+    //alert(room_index);
+    state = $(element).is(':checked');
+    $.ajax({
+               type:'POST',
+               url:'/setsecuritymode',
+               data:{state},
+               success:function(data) {
+               }
+            });
+}
 function update_state(room_index, device, element){
     //alert(room_index);
     state = $(element).is(':checked');
@@ -285,7 +296,7 @@ function update_dim_state(room_index, element){
                     <h2 style="font-size: 26px">Quick Access</h2>
                     <div class="row">
 
-                        <div class=" col-xs-10 col-sm-5 col-md-5 col-lg-5 ">
+                        <div class=" col-xs-12 col-sm-12 col-md-6 col-lg-4 ">
                             <h4 style="font-size: 20px">Auto mode :<span>
                                 <label style="margin-left:20px; margin-top: 5px; float: none;" class="switch controlswitch">
                                     
@@ -310,9 +321,7 @@ function update_dim_state(room_index, element){
                     
                         </div>
 
-                        <div class=" col-xs-1 col-sm-1 col-md-1 col-lg-1 ">
-                        </div>
-                        <div class=" col-xs-10 col-sm-5 col-md-5 col-lg-5 ">
+                        <div class=" col-xs-12 col-sm-12 col-md-6 col-lg-4 ">
                             <h4 style="font-size: 20px">Night mode :<span>
                                 <label style="margin-left:20px; margin-top: 5px; float: none;" class="switch controlswitch">
                                     
@@ -337,6 +346,33 @@ function update_dim_state(room_index, element){
                             </h6>
                     
                         </div>
+
+                        <div class=" col-xs-12 col-sm-12 col-md-6 col-lg-4 ">
+                            <h4 style="font-size: 20px">Security mode :<span>
+                                <label style="margin-left:20px; margin-top: 5px; float: none;" class="switch controlswitch">
+                                    
+                                @if($securityenabled == 0)
+                                <input type="checkbox" onclick = 'security_enable(this)' class="switch-input">
+                                @else
+                                <input type="checkbox" onclick = 'security_enable(this)' class="switch-input" checked>
+                                @endif
+
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                                </span>
+                            </h4>
+                            <h6 style="font-size: 15px; color: rgb(136, 136, 136)" align="justify">
+                            When security mode is enabled system will look for any movment and 
+                            in case of any disturbance system will take a snap and save it on 
+                            web server, and user will be notified via text message. User can log in to the 
+                            website and check if the activity is suspicious and take action accordingly.
+                            
+                            </h6>
+                    
+                        </div>
+
+
                     </div>
                 </div>
             </div>
