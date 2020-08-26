@@ -366,6 +366,52 @@ class apiController extends Controller
 
     }
 
+    
+    public function setsettings(Request $request){
+        if(self::verifytoken($request) == "ok")
+        {
+            
+            $email = $request->get('email');
+            $user = DB::table('users')->where('email', '=', $email)->first();
+            $id = $user->id;
+            if($request->auto_state == 'true'){
+                DB::update('update users set Auto_Enabled = ? where id = ?',[1, $id]);
+            } 
+            else{
+                DB::update('update users set Auto_Enabled = ? where id = ?',[0, $id]);
+            }
+
+            if($request->security_state == 'true'){
+                DB::update('update users set Security_Enabled = ? where id = ?',[1, $id]);
+            } 
+            else{
+                DB::update('update users set Security_Enabled = ? where id = ?',[0, $id]);
+            }
+
+            if($request->night_state == 'true'){
+                DB::update('update users set Night_Enabled = ? where id = ?',[1, $id]);
+                DB::update('update rooms set morning_state = state, state = night_state where user_id = ?',[$id]);
+            } 
+            else{
+                DB::update('update users set Night_Enabled = ? where id = ?',[0, $id]);
+                DB::update('update rooms set state = morning_state where user_id = ?',[$id]);
+            }
+
+         return "ok";   
+        }
+        return "invalid";
+    }
+
+    
+    public function getsettings(Request $request){
+        if(self::verifytoken($request) == "ok")
+        {
+            $email = $request->get('email');
+            $user = DB::table('users')->where('email', '=', $email)->first();
+
+            return $user->Night_Enabled . $user->Auto_Enabled . $user->Security_Enabled;
+        }
+    }
 
 
 }

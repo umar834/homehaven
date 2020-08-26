@@ -26,6 +26,8 @@ Route::post("verifytoken","apiController@verifytoken");
 Route::post("getroominfo","apiController@getroominfo");
 Route::post("setroomstate","apiController@setroomstate");
 Route::post("getroomstate","apiController@getroomstate");
+Route::post("getSettings","apiController@getsettings");
+Route::post("setSettings","apiController@setsettings");
 Route::post("setnightroomstate","apiController@setnightroomstate");
 Route::post("getnightroomstate","apiController@getnightroomstate");
 Route::post("getconsumpdata","apiController@consumptionData");
