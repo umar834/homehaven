@@ -166,6 +166,7 @@ function update_dim_state(room_index, element){
         else {
             $watt = 0;
         }
+
         /*Calculating previous day power power*/
         $yest_sum = $yest_power->log_0 + $yest_power->log_1 + $yest_power->log_2 + $yest_power->log_3
                     + $yest_power->log_4 + $yest_power->log_5;
@@ -236,9 +237,9 @@ function update_dim_state(room_index, element){
                 <h3>Energy currently being consumed</h3>
                 @if ($power_data != null)
                 <div class="GaugeMeter" id="PreviewGaugeMeter_4"
-                        data-used="{{$watt}}"
+                        data-used="{{$watts}}"
                         data-total="1000"
-                        data-text="{{$watt}}"
+                        data-text="{{$watts}}"
                         data-text_size="0.12"
                         data-append="Watts"
                         data-size="250"

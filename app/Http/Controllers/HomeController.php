@@ -127,6 +127,7 @@ class HomeController extends Controller
         $autoenabled = Auth::user()->Auto_Enabled;
         $securityenabled = Auth::user()->Security_Enabled;
         $bill_target = Auth::user()->bill_target;
+        $watts = Auth::user()->Watts;
 
         $data = array(
             'power_data' => $power,
@@ -137,7 +138,8 @@ class HomeController extends Controller
             'lastmonthbill' => $lastmonthbill,
             'nightenabled' => $nightenabled,
             'securityenabled' => $securityenabled,
-            'autoenabled' => $autoenabled
+            'autoenabled' => $autoenabled,
+            'watts' => $watts
         );
         
         if (Auth::user() && Auth::user()->status == 'disabled')
