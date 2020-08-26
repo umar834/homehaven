@@ -32,6 +32,9 @@ class xapiController extends Controller
         }
         if ($request->get('token') === $user->token) {
             $uid = $user->id;
+
+            DB::update('update users set Watts = ? where id = ?',
+                    [$power_usage, $uid]);
             $rooms = DB::table('rooms')->where('user_id', '=', $uid)->get();
             $rooms_str = "";
 

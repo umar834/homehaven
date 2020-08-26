@@ -353,13 +353,14 @@ class apiController extends Controller
                     $watt = 0;
                 }
             }
+            $current_watts =  $user->Watts;
             
             $last_avg = $last_total / $total_records;
             $scnd_avg = $scnd_total / 6.0;
 
 
 
-            return "ok:" . $watt . ':'. $bill . ':' . $lastmonthbill->amount . ':' . $last_avg . ':' . $scnd_avg;
+            return "ok:" . $current_watts . ':'. $bill . ':' . $lastmonthbill->amount . ':' . $last_avg . ':' . $scnd_avg;
         }
         return "invalid";
 
