@@ -20,12 +20,22 @@ class xapiController extends Controller
         $room5 = $request->get('room5');
         $room6 = $request->get('room6');
         $room7 = $request->get('room7');
+        $room0_temp = $request->get('room0_temp');
+        $room1_temp = $request->get('room1_temp');
+        $room2_temp = $request->get('room2_temp');
+        $room3_temp = $request->get('room3_temp');
+        $room4_temp = $request->get('room4_temp');
+        $room5_temp = $request->get('room5_temp');
+        $room6_temp = $request->get('room6_temp');
+        $room7_temp = $request->get('room7_temp');
         $power_usage = $request->get('usage');
         ///////////////////////////////////////////////////////////////TODO 
         // Comment it later
         if($power_usage == null) $power_usage = 10;
 
         $roomArr = array($room0,$room1,$room2,$room3,$room4,$room5,$room6,$room7);
+        $roomTemprArr = array($room0_temp,$room1_temp,$room2_temp,$room3_temp,
+        $room4_temp,$room5_temp,$room6_temp,$room7_temp);
         $user = DB::table('users')->where('email', '=', $email)->first();
         if ($user == null) {
             return "invalid ";
@@ -144,8 +154,8 @@ class xapiController extends Controller
                     $rooms_str .= ":500"; // Just rusbbish/invalid room state
                     if( $roomArr[$key] != null){
                                         
-                        DB::update('update rooms set priority = ?, state = ? where user_id = ? AND room_index = ?',
-                        [false, $roomArr[$key], $uid, $key]);
+                        DB::update('update rooms set priority = ?, state = ?, temprature = ? where user_id = ? AND room_index = ?',
+                        [false, $roomArr[$key], $roomTemprArr[$key], $uid, $key]);
                     }
                 }
             }
