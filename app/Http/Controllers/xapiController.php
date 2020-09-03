@@ -144,7 +144,8 @@ class xapiController extends Controller
                 //dump($value->changed_at );
                 //dump($date );
                 //dump($roomArr[$key]);
-                if ($value->changed_at > $date && $value->priority == true){
+                //if ($value->changed_at > $date && $value->priority == true){
+                if ($value->priority == true){
                     $rooms_str .= sprintf(":%03d", $value->state); 
                     DB::update('update rooms set priority = ? where user_id = ? AND room_index = ?',
                     [false, $uid, $key]);
