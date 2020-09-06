@@ -1156,7 +1156,7 @@ function update_dim_state(room_index, element){
                 @endif
             @endfor
             @for ($i = 9; $i > $last_snap; $i--)
-                @if (file_exists(public_path('storage/app/images/security/user'.$uid.'/snap_'.$i.'.jpg')))
+                @if (file_exists(public_path('../storage/app/images/security/user'.$uid.'/snap_'.$i.'.jpg')))
                     <div class = "col-md-6 col-lg-4 col-sm-12 col-xs-12 top-bottom-padd">
                         <img class = "security"
                             src="<?php echo asset("storage/app/images/security/user$uid/snap_$i.jpg")?>"
