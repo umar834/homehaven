@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class xapiController extends Controller
 {
@@ -167,5 +168,29 @@ class xapiController extends Controller
         return "invalid";
     }
 
+
+    public function savesnap(Request $request){
+
+        $email = $request->get('email');
+        $user = DB::table('users')->where('email', '=', $email)->first();
+        if ($user == null) {
+            return "invalid ";
+        }
+        if ($request->get('token') === $user->token && $request->hasFile('photo')) {
+            
+            $image      = $request->file('photo');
+
+            $uid = $user->id;
+            $num = $user->last_snap + 1;
+            if($num > 9) $num = 0;
+            DB::update('update users set last_snap = ? where id = ?',
+                    [$num, $uid]);
+
+            //dd();
+            Storage::disk('local')->putFileAs('images/security/user'.$uid, $image, 'snap_'.$num.'.jpg');
+            return "ok";
+        }
+        return "invalid";
+    }
 
 }

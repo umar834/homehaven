@@ -114,6 +114,7 @@ function update_dim_state(room_index, element){
             <button onclick="openCity(event, 'mainwindow')" class="tablinks active"><i class="fas fa-tachometer-alt"></i>&nbsp; Main Window</button><br>
             <button onclick="openCity(event, 'controls')" class="tablinks"><i class="fas fa-dharmachakra"></i></i>&nbsp; Controls</button><br>
             <button onclick="openCity(event, 'nightmode')" class="tablinks"><i class="fas fa-moon"></i></i>&nbsp; Night Mode</button><br>
+            <button onclick="openCity(event, 'security')" class="tablinks"><i class="fa fa-camera"></i>&nbsp; Security Logs</button><br>
             <button onclick="openCity(event, 'settings')" class="tablinks"><i class="fa fa-wrench"></i>&nbsp; Settings</button><br>
             <button href="{{ route('logout') }}"
                     onclick="event.preventDefault();
@@ -1096,6 +1097,79 @@ function update_dim_state(room_index, element){
                 <button style="float: right;" class="btn btn-primary" onclick="window.location='{{ url("changePassword") }}'">Change Password</button>
             </div>
         </div>
+
+        <!--*****************SETTINGS TAB****************-->
+        <div id="settings" class="tabcontent settingstab col-md-8 col-lg-6 col-sm-12 col-xs-12">
+            <div class="editdp settingcontent">
+            <form action="/saveuserimage" method="post" enctype="multipart/form-data">
+                @csrf
+                <img id="uploadeddp"
+                @if (Auth::user()->image_name == null){
+            src="{{asset('images/user.png')}}"
+             }
+            @else{
+                @php
+                    $image = Auth::user()->image_name;
+                @endphp
+                src="<?php echo asset("storage/app/public/$image")?>"
+            }
+            @endif  
+            alt="user">
+                 
+                <input type="file" class="choosedp" accept="image/*" name="dpimg" id="dpfile">
+                <label style="margin-top: 20px" class="dpbutton" for="dpfile">Change Image</label>
+                <button style="margin-top: 10px; float: right;" type="submit" class="btn btn-primary" disabled>Save Image</button>
+            </form>
+            </div>
+
+            <div class="settingcontent editemail">
+                <label for="emailid">Email: </label>
+                <input style="width: 55%;" type="email" class="form-control" name="email" id="emailid" value="{{Auth::user()->email}}" readonly>
+                <button style="float: right; margin-top: -37px" class="btn btn-primary" onclick="window.location='{{ url("changeEmail") }}'">Change Email</button>
+            </div>
+
+            <div style="padding: 20px 0" class="settingcontent editpassword">
+                <label>Password: <span style="color:#858585;">&nbsp;***********</span></label>
+                <button style="float: right;" class="btn btn-primary" onclick="window.location='{{ url("changePassword") }}'">Change Password</button>
+            </div>
+        </div>
+
+            
+        <!--*****************SECURITY LOGs TAB****************-->
+        <div id="security" class="tabcontent settingstab ">
+            <div  class = "row">
+            <div class ="securitydiv col-md-12 col-lg-12 col-sm-12 col-xs-12">
+            <h3>Images captured by security camera.</h3>
+            </div>
+            @php
+                $uid = Auth::user()->id;
+                $last_snap = Auth::user()->last_snap;
+            @endphp
+            @for ($i = $last_snap; $i >= 0; $i--)
+                @if (file_exists(public_path('storage/app/images/security/user'.$uid.'/snap_'.$i.'.jpg')))
+                    <div class = "col-md-6 col-lg-4 col-sm-12 col-xs-12 top-bottom-padd">
+                        <img class = "security"
+                            src="<?php echo asset("storage/app/images/security/user$uid/snap_$i.jpg")?>"
+                            alt="Security Log Image">
+                    </div>
+                @else
+                @endif
+            @endfor
+            @for ($i = 9; $i > $last_snap; $i--)
+                @if (file_exists(public_path('storage/app/images/security/user'.$uid.'/snap_'.$i.'.jpg')))
+                    <div class = "col-md-6 col-lg-4 col-sm-12 col-xs-12 top-bottom-padd">
+                        <img class = "security"
+                            src="<?php echo asset("storage/app/images/security/user$uid/snap_$i.jpg")?>"
+                            alt="Security Log Image">
+                    </div>
+                @else
+                @endif
+            @endfor
+            </div>
+
+            
+        </div>
+
     </div>
 </div>
 <script>

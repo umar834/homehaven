@@ -31,6 +31,28 @@ html, body, .maindiv {
 	width: 100%;
 }
 
+.img-thumbnail {
+  padding: 0.25rem;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.security {
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 2px;
+  width: 100%;
+}
+
+.top-bottom-padd{
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+
 .userInfo img {
 	border-radius: 50px;
 	text-align: center;
@@ -118,6 +140,7 @@ html, body, .maindiv {
 }
 
 .energydiv h3,
+.securitydiv h3,
 .billprediciton h3{
 	font-size: 18px;
 	font-weight: 600;
