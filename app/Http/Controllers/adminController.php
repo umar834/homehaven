@@ -85,16 +85,27 @@ class adminController extends Controller
     public function updateuser(Request $request)
     {
 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-        ]);
+        $user = DB::table('users')->where('id', '=',  $request['id'])->first();
+        $old_mail = $user->email;
+        if($old_mail == $request['email']){
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+            ]);
+        }
+        else{
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+            ]);
+        }
+
         $user_id = $request['id'];
         $name = $request['name'];
+        $phone = $request['phone'];
         $email = $request['email'];
         $status = $request['status'];
 
-        DB::update('update users set name = ?, email = ?, status = ? where id = ?',[$name, $email, $status, $user_id]);
+        DB::update('update users set name = ?, email = ?, status = ?, phone = ? where id = ?',[$name, $email, $status, $phone, $user_id]);
 
         return redirect()->back()->with("success","User Updated successfully!");;
     }

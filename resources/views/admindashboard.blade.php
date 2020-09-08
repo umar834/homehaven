@@ -234,7 +234,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Email</th>    
+                        <th>Email</th>  
+                        <th>Phone</th>    
                         <th>Status</th>
                         <th>Created on</th>
                         <th></th>
@@ -250,6 +251,7 @@
                             <td>{{$user->id}}</td>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
+                            <td>{{$user->phone}}</td>
                             <td>{{$user->status}}</td>
                             <td>{{$new_date}}</td>
                             <td><p><a class="button11" href="#popup{{$user->id}}">Edit</a></p></td>
@@ -274,6 +276,13 @@
                                       <label for="email">Email: </label>
                                       <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" value="{{$user->email}}">
                                         @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                      <label for="phone">Phone: </label>
+                                      <input class="form-control @error('phone') is-invalid @enderror"  name="phone" value="{{$user->phone}}">
+                                        @error('phone')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
