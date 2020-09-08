@@ -199,6 +199,16 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" value="{{$pass}}" required autocomplete="new-password" readonly>
+                            </div>
+                            <input type="text" name="role" value="user" hidden>
+                            <input type="text" name="status" value="active" hidden>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
