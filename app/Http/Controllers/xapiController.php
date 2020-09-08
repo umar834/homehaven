@@ -200,4 +200,22 @@ class xapiController extends Controller
         return "invalid";
     }
 
+
+    public function isSecure(Request $request){
+
+        $email = $request->get('email');
+        $user = DB::table('users')->where('email', '=', $email)->first();
+        if ($user == null) {
+            return "invalid ";
+        }
+        if ($request->get('token') === $user->token) {
+            
+            $secure = $user->Security_Enabled;
+           
+            if($secure)return "true";
+            else return "false";
+        }
+        return "invalid";
+    }
+
 }

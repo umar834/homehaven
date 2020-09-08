@@ -22,3 +22,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post("edgesync","xapiController@edgesync");
 
 Route::post("snapcap","xapiController@savesnap");
+Route::post("issecure","xapiController@isSecure");
