@@ -122,7 +122,7 @@
             <div id="popupnew" class="overlay11 light11">
 	            <a class="cancel" href="#"></a>
 	            <div class="popup">
-                    <h2>Edit user</h2>
+                    <h2>Add new user</h2>
                     <a class="close" href="#">&times;</a>
 		            <div class="content">
                     @php
@@ -154,6 +154,25 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="phone" class="col-md-4 col-form-label text-md-right">Phone</label>
+
+                            <div class="col-md-6">
+                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                <span class="valid-feedback">
+                                        <strong>Phone# must start with 923*********.</strong>
+                                    </span>
+                                @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
@@ -167,6 +186,8 @@
                             </div>
                         </div>
 
+
+
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
@@ -176,16 +197,6 @@
                                         <strong>Password is auto-generated and will be sent to user through email.</strong>
                                     </span>
                             </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" value="{{$pass}}" required autocomplete="new-password" readonly>
-                            </div>
-                            <input type="text" name="role" value="user" hidden>
-                            <input type="text" name="status" value="active" hidden>
                         </div>
 
                         <div class="form-group row mb-0">
