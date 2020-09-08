@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class xapiController extends Controller
 {
@@ -178,7 +179,13 @@ class xapiController extends Controller
         }
         if ($request->get('token') === $user->token && $request->hasFile('photo')) {
             
-            $image      = $request->file('photo');
+            $image = $request->file('photo');
+            $phone = $user->phone;
+            $sendSMSurl = "https://lifetimesms.com/plain?api_token=be156954cc82881b55f850587f8ef1dc5889b03111
+            &api_secret=4JK3hsd9NDnEn&to=$phone&from=HomeHaven&message=HomeHaven Security \n  System has detected some suspicious activity.
+             Please go to website to view snaps.";
+
+            $response = Http::get($sendSMSurl);
 
             $uid = $user->id;
             $num = $user->last_snap + 1;
