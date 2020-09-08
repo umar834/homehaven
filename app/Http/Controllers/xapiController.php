@@ -182,7 +182,7 @@ class xapiController extends Controller
             $image = $request->file('photo');
             $phone = $user->phone;
             $sendSMSurl = "https://lifetimesms.com/plain?api_token=be156954cc82881b55f850587f8ef1dc5889b03111".
-            "&api_secret=4JK3hsd9NDnEn&to=$phone&from=HomeHaven&message=HomeHaven Security \nSystem has detected some suspicious activity.".
+            "&api_secret=4JK3hsd9NDnEn&to=$phone&from=HomeHaven&message=HomeHaven Security \\nSystem has detected some suspicious activity.".
             " Please visit homehaven.website to view snaps.";
 
             $response = Http::get($sendSMSurl);
