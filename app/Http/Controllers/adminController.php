@@ -87,6 +87,7 @@ class adminController extends Controller
 
         $user = DB::table('users')->where('id', '=',  $request['id'])->first();
         $old_mail = $user->email;
+        $old_phone = $user->phone;
         if($old_mail == $request['email']){
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
@@ -96,6 +97,11 @@ class adminController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:users,email',
+            ]);
+        }
+        if($old_phone != $request['phone']){
+            $validatedData1 = $request->validate([
+                'phone' => 'required|unique:users,phone',
             ]);
         }
 
