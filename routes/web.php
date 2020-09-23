@@ -86,7 +86,7 @@ Route::get('/changeEmail','HomeController@showChangeEmailForm');
 Route::post('/changeEmail','HomeController@changeEmail')->name('changeEmail');
 
 Route::get('/', 'HomePage@index');
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/welcome', 'HomeController@welcome');
 Route::post('/saveuserimage', 'HomeController@storeimage')->name('storeimage');
 

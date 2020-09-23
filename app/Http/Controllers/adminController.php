@@ -190,7 +190,7 @@ class adminController extends Controller
         }
 
         DB::table('rooms')->where('id', $id)->delete();
-        return redirect()->back()->with("success","Room deleted successfully!");
+        return redirect()->route('home')->with("success","Room deleted successfully!");
     }
 
 
